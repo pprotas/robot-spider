@@ -11,9 +11,7 @@ Installeer python-virtualenv [hier](https://virtualenv.pypa.io/en/latest/)
 (Ubuntu):
 ```sudo apt-get install python3-venv```
 ### Gebruik
-1. Maak je development environment
-  - ```virtualenv venv```
-  - Als dit niet werkt probeer ```python3 -m venv venv```
+1. Maak je development environment met```virtualenv venv```. Als dit niet werkt probeer ```python3 -m venv venv```
 2. Activeer de script: ```source venv/bin/activate```
 ## Dependencies
 Om alle dependencies te installeren voor dit project:
