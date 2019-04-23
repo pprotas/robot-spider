@@ -3,6 +3,6 @@
 venv
 *env*
 .env
-*.robot.egg-info
-.cache
-.__pycache__
+*.egg-info
+.*cache
+__pycache__
