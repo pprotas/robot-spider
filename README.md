@@ -18,3 +18,5 @@ Installeer python-virtualenv [hier](https://virtualenv.pypa.io/en/latest/)
 Om alle dependencies te installeren voor dit project: ```python3 -m pip install requirements.txt```
 # Testen
 De tests bevinden zich in de ```tests/``` directory. Om tests uit te voeren gebruik je de commando ```python3 -m pytest```
+# Werking
+Ga naar de ```app/``` directory en voer de commando ```python3 -m main``` uit.
