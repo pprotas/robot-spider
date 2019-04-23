@@ -1,10 +1,3 @@
----
-title: Robot Spin
-tagline: Groep 9
----
-
-
-
 ### Editing guide:
 ```markdown
 Syntax highlighted code block
