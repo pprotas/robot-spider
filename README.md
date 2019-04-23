@@ -7,6 +7,7 @@ https://pprotas.github.io/robot-spider/
 Installeer Python 3.7 voor jouw OS [hier](https://wiki.python.org/moin/BeginnersGuide/Download)
 ## (Optioneel) Virtualenv
 Installeer python-virtualenv [hier](https://virtualenv.pypa.io/en/latest/)
+
 (Ubuntu):
 ```bash
 sudo apt-get install python3-venv
