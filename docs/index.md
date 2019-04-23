@@ -1,3 +1,8 @@
+---
+title: Home
+layout: post
+---
+
 ### Editing guide:
 ```markdown
 Syntax highlighted code block
