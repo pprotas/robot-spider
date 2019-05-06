@@ -5,23 +5,18 @@ https://pprotas.github.io/robot-spider/
 # Installatie
 ## Python 3.7
 Installeer Python 3.7 voor jouw OS [hier](https://wiki.python.org/moin/BeginnersGuide/Download)
-## (Optioneel) Virtualenv
+## (Optioneel maar aanbevolen) Virtualenv
 Installeer python-virtualenv [hier](https://virtualenv.pypa.io/en/latest/)
-### Gebruik
-1. Maak je development environment
-``` bash
-virtualenv venv
-```
-2. Activeer de script
-```bash
-source venv/bin/activate
-```
+
+(Ubuntu):
+```sudo apt-get install python3-venv```
+### Gebruik (Ubuntu, voor Windows instructies zie bovenstaande link)
+1. Maak je development environment met ```python3 -m venv venv```
+2. Activeer de script: ```source venv/bin/activate```
+3. Installeer de package: ```python3 -m pip install -e .```
 ## Dependencies
-Om alle dependencies te installeren voor dit project:
-``` bash
-pip install -r requirements.txt
-```
-of
-``` bash
-pip3 install -r requirements.txt
-```
+Om alle dependencies te installeren voor dit project: ```python3 -m pip install requirements.txt```
+# Testen
+De tests bevinden zich in de ```tests/``` directory. Om tests uit te voeren gebruik je de commando ```python3 -m pytest```
+# Werking
+Ga naar de ```app/``` directory en voer de commando ```python3 -m main``` uit.
