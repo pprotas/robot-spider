@@ -1,4 +1,5 @@
-import cv2
+from movement.movement import Movement
 
 if __name__ == '__main__':
-    print("hi")
+    movement = Movement('/dev/ttyUSB0')
+    movement.move_servo(1, 999)
