@@ -8,32 +8,31 @@ import time
 def on_message(ws, message):
     print(message)
 
-def on_error(ws, error):
-    print("retry")
+def retry(ws, error):
+    ws.close();
     main()
 
-def on_close(ws):
-    print("### closed ###")
-
 def on_open(ws):
-    def run(*args):
+    print("Connected.")
+
+    def run(*args, ws):
         for i in range(3):
             time.sleep(1)
             ws.send("Hello %d" % i)
         time.sleep(1)
-        # ws.close()
-    #     print("thread terminating...")
-    thread.start_new_thread(run, ())
+        ws.
+
+
+    thread.start_new_thread(run, (ws))
+
 
 def main():
-    websocket.enableTrace(True)
     ws = websocket.WebSocketApp("ws://192.168.43.36:5000/connect/robot",
                              on_message=on_message,
-                             on_error=on_error,
-                             on_close=on_close)
+                             on_error=retry,
+                             on_close=retry)
     ws.on_open = on_open
-    ws.run_forever()
-    input()
+    input("Press a key")
 
 if __name__ == "__main__":
     main()
