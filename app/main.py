@@ -1,4 +1,5 @@
-import cv2
+from movement.movement import Movement
 
-# Als je programma hier crasht moet je OpenCV2 downloaden.
-print('OpenCV version: ', cv2.__version__)
+if __name__ == '__main__':
+    movement = Movement('/dev/ttyUSB0')
+    movement.move_servo(1, 999)
