@@ -6,5 +6,5 @@ class Movement:
         self.ser = serial.Serial(port, 9600)
 
     def move_servo(self, servo, position):
-        s = f"{servo},{position}"
+        s = f"{servo},{position}\n"
         self.ser.write(s.encode())
