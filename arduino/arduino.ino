@@ -1,72 +1,64 @@
 #include <DynamixelSerial.h>
+#include <Wire.h>
 
+#define SLAVE_ADDRESS 0x04
 #define INPUT_SIZE 9
-#define BAUD_RATE 9600
 
 char piData[INPUT_SIZE];
-boolean newData = false;
-int data1, data2;
+int counter = 0;
+int ser, pos;
 int Temperature, Voltage, Position;
 
 void setup() {
-  Serial.begin(BAUD_RATE);
-  delay(1000);
+  Dynamixel.begin(1000000,2);
+  delay(500);
+  Wire.begin(SLAVE_ADDRESS);
+  Wire.onReceive(receiveData);
+  Wire.onRequest(sendData);
 }
 
 void loop() {
-  if(Serial.available() > 0){
-    receive();
-  }  
-  //checkStatus();
-  delay(100);
+  checkStatus();
+  moveServo(ser,pos);
+  Dynamixel.end();
+  Serial.begin(9600);
+  Serial.println(Temperature);
+  Serial.println(Voltage);
+  Serial.println(Position);
+  Serial.end();
+  Dynamixel.begin(1000000,2);
+  delay(1000);
 }
 
-void receive(){
-  static byte ndx = 0;
-  char endMarker='\n';
-  char rc;
-  newData = false;
-
-  while (Serial.available() > 0 && newData == false) {
-    rc = Serial.read();
-    Serial.println(rc);
-    if (rc != endMarker) {
-      piData[ndx] = rc;
-      ndx++;
-      if (ndx >= INPUT_SIZE) {
-        ndx = INPUT_SIZE - 1;
-      }
-    }
-    else {
-      piData[ndx] = '\0';
-      ndx = 0;
-      newData = true;
-    }
+void receiveData(int byteCount){
+  char rc = Wire.read();
+  piData[counter] = rc;
+  counter++;
+  if(counter == INPUT_SIZE || rc == '\n') {
+    counter = 0;
+    separate();
+    moveServo(ser, pos);
   }
+}
 
-  separate();
-  moveServo(data1, data2);
+void sendData() {
 }
 
 void separate() {
   char* separator = strchr(piData, ',');
   *separator = 0;
-  data1 = atoi(piData);
+  ser = atoi(piData);
   ++separator;
-  data2 = atoi(separator);  
+  pos = atoi(separator); 
 }
 
 void moveServo(int servo, int position) {
-  Serial.end();
-  Dynamixel.begin(1000000,2);
   Dynamixel.move(servo, position);
-  Dynamixel.end();
-  Serial.begin(BAUD_RATE);
 }
 
 void checkStatus() {
-//  Temperature = Dynamixel.readTemperature(1);
-//  Voltage = Dynamixel.readVoltage(1);
-//  Position = Dynamixel.readPosition(1);
+  Temperature = Dynamixel.readTemperature(1);
+  Voltage = Dynamixel.readVoltage(1);
+  Position = Dynamixel.readPosition(1);
 }
 
