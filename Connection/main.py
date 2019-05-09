@@ -1,4 +1,5 @@
 import websocket
+import json
 try:
     import thread
 except ImportError:
@@ -14,13 +15,31 @@ def on_error(ws, error):
 def on_close(ws):
     print("Close")
 
+def status(ws):
+    # a Python object (dict):
+    x = {
+        "type": "status",
+        "message": {
+            "temp": "40",
+            "status": "online"
+        }
+    }
+
+    # convert into JSON:
+    y = json.dumps(x)
+
+    # the result is a JSON string:
+    ws.send(y)
+    #ws.send("peop")
+
+
 def on_open(ws):
     print("Connected.")
+    status(ws)
 
     def run(*args, ws):
         for i in range(3):
             time.sleep(1)
-            ws.send("Hello %d" % i)
         time.sleep(1)
 
     thread.start_new_thread(run, (ws))
