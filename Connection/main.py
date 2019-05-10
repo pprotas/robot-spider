@@ -6,14 +6,18 @@ except ImportError:
     import _thread as thread
 import time
 
+
 def on_message(ws, message):
     print(message)
+
 
 def on_error(ws, error):
     print("Error")
 
+
 def on_close(ws):
     print("Close")
+
 
 def status(ws):
     # a Python object (dict):
@@ -30,7 +34,7 @@ def status(ws):
 
     # the result is a JSON string:
     ws.send(y)
-    #ws.send("peop")
+    # ws.send("peop")
 
 
 def on_open(ws):
@@ -47,14 +51,15 @@ def on_open(ws):
 
 def main():
     ws = websocket.WebSocketApp("ws://192.168.43.36:5000/connect/robot",
-                             on_message=on_message,
-                             on_error=on_error,
-                             on_close=on_close)
+                                on_message=on_message,
+                                on_error=on_error,
+                                on_close=on_close)
     ws.on_open = on_open
 
     while True:
         ws.run_forever()
         time.sleep(1)
+
 
 if __name__ == "__main__":
     main()
