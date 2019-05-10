@@ -16,20 +16,20 @@ Bevestig je PIP versie met ```python -m pip -V``` in je favoriete terminal.
 
 **Het is belangrijk dat je Python versie 3.7 gebruikt. Zo voorkomen we conflicten tussen developers.**
 
-(Windows & Ubuntu):
+**(Windows & Ubuntu):**
 
 ```python -m pip install virtualenv```
 ### Gebruik
 1. Maak je development environment met ```python -m virtualenv venv```
 
-(Windows):
+**(Windows):**
 
 2. Activeer de script: ```./venv/Scripts/activate```
 
-(Ubuntu):
+**(Ubuntu):**
 
 2. Activeer de script: ```source venv/bin/activate```
-3. Bevestig dat je in de virtual environment zit. Als het goed is zie je nu ```(venv)`` aan het begin van je command line prompt staan.
+3. Bevestig dat je in de virtual environment zit. Als het goed is zie je nu ```(venv)``` aan het begin van je command line prompt staan.
 ## Dependencies
 Om alle dependencies te installeren voor dit project: ```python -m pip install requirements.txt```
 ### Eigen dependencies toevoegen
