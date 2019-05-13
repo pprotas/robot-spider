@@ -1,9 +1,12 @@
 from movement.movement import Movement
+from i2c.i2c import I2C
+import serial
 import time
 
 if __name__ == '__main__':
-    movement = Movement(4)
-    movement.move_servo(111,111)
+    comm = I2C(4)
+    #movement = Movement(comm)
+    #movement.move_servo(111,111)
 ##    while True:
 ##        Temperature = movement.readNumber()
 ##        print("Temperature: ", Temperature)
@@ -11,4 +14,5 @@ if __name__ == '__main__':
 ##        print("Voltage: ", Voltage)
 ##        Position = movement.readNumber()
 ##        print("Position: ", Position*1023/255)
-##        time.sleep(2)
+    while True:
+        comm.read();

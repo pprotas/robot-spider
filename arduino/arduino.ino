@@ -11,39 +11,23 @@ int Temperature, Voltage, Position;
 int readCounter = 0;
 
 void setup() {
-  //Dynamixel.begin(1000000,2);
-  Serial.begin(9600);
+  Dynamixel.begin(1000000,2);
   Wire.begin(SLAVE_ADDRESS);
   Wire.onReceive(receiveData);
-  //Wire.onRequest(sendData);
+  Wire.onRequest(sendData);
 }
 
 void loop() {
   //checkStatus();
   //moveServo(ser,pos);
-  //Dynamixel.end();
-  //Serial.begin(9600);
-  //Serial.println(Temperature);
-  //Serial.println(Voltage);
-  //Serial.println(Position);
-  //Serial.end();
-  //Dynamixel.begin(1000000,2);
   delay(1000);
 }
 
 void receiveData(int byteCount){
-//  char rc = Wire.read();
-//  piData[counter] = rc;
-//  counter++;
-//  if(counter == INPUT_SIZE || rc == '\n') {
-//    counter = 0;
-//    separate();
-//    moveServo(ser, pos);
-//  }
   while(Wire.available()){
     char rc = Wire.read();
     if(counter != -1){
-    piData[counter] = rc;
+      piData[counter] = rc;
     }
     counter++;
     if(counter == INPUT_SIZE || rc == '\n')
@@ -55,19 +39,24 @@ void receiveData(int byteCount){
 }
 
 void sendData() {
-  if(readCounter == 0) {
-    Wire.write(Temperature);
-    readCounter++;
-  }
-  else if(readCounter == 1) {
-    Wire.write(Voltage);
-    readCounter++;
-  }
-  else if(readCounter == 2) {
-    Position = map(Position, 0, 1023, 0, 255);
-    Wire.write(Position);
-    readCounter = 0;
-  }
+//  if(readCounter == 0) {
+//    Wire.write(Temperature);
+//    readCounter++;
+//  }
+//  else if(readCounter == 1) {
+//    Wire.write(Voltage);
+//    readCounter++;
+//  }
+//  else if(readCounter == 2) {
+//    Position = map(Position, 0, 1023, 0, 255);
+//    Wire.write(Position);
+//    readCounter = 0;
+//  }
+  Dynamixel.end();
+  Serial.begin(9600);
+  Serial.println("Request");
+  Serial.end();
+  Dynamixel.begin(1000000,2);
 }
 
 void separate() {
@@ -81,7 +70,7 @@ void separate() {
 }
 
 void moveServo(int servo, int position) {
-  Dynamixel.move(servo, position);
+   Dynamixel.move(servo, position);
 }
 
 void checkStatus() {
@@ -89,4 +78,5 @@ void checkStatus() {
   Voltage = Dynamixel.readVoltage(1);
   Position = Dynamixel.readPosition(1);
 }
+
 
