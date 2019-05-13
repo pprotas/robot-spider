@@ -1,7 +1,7 @@
-from communication.communication import Communication
-from movement.movement import Movement
+from robot.communication.communication import Communication
+from robot.movement.movement import Movement
 from threading import Thread
-from state.controlState.stairState import StairState
+from robot.state.controlState.classes.stairState import StairState
 
 
 class Controller:

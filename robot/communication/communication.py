@@ -7,6 +7,7 @@ except ImportError:
     import _thread as thread
 import time
 
+
 class Communication:
     def on_message(self, message):
         self.handle_message(message)
