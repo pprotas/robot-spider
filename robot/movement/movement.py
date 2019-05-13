@@ -1,10 +1,10 @@
-import smbus2  # Deze line zal crashen op Windows systemen.
+import smbus2
 import time
 
 
 class Movement:
     def __init__(self, address):
-        self.bus = smbus.SMBus(1)
+        self.bus = smbus2.SMBus(1)
         self.address = address
 
     def writeByte(self, value):
@@ -13,7 +13,7 @@ class Movement:
             time.sleep(0.1)
         return -1
 
-    def readNumber():
+    def readNumber(self):
         number = self.bus.read_byte(address)
         return number
 
