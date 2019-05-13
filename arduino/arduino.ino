@@ -5,43 +5,69 @@
 #define INPUT_SIZE 9
 
 char piData[INPUT_SIZE];
-int counter = 0;
+int counter = -1;
 int ser, pos;
 int Temperature, Voltage, Position;
+int readCounter = 0;
 
 void setup() {
-  Dynamixel.begin(1000000,2);
-  delay(500);
+  //Dynamixel.begin(1000000,2);
+  Serial.begin(9600);
   Wire.begin(SLAVE_ADDRESS);
   Wire.onReceive(receiveData);
-  Wire.onRequest(sendData);
+  //Wire.onRequest(sendData);
 }
 
 void loop() {
-  checkStatus();
-  moveServo(ser,pos);
-  Dynamixel.end();
-  Serial.begin(9600);
-  Serial.println(Temperature);
-  Serial.println(Voltage);
-  Serial.println(Position);
-  Serial.end();
-  Dynamixel.begin(1000000,2);
+  //checkStatus();
+  //moveServo(ser,pos);
+  //Dynamixel.end();
+  //Serial.begin(9600);
+  //Serial.println(Temperature);
+  //Serial.println(Voltage);
+  //Serial.println(Position);
+  //Serial.end();
+  //Dynamixel.begin(1000000,2);
   delay(1000);
 }
 
 void receiveData(int byteCount){
-  char rc = Wire.read();
-  piData[counter] = rc;
-  counter++;
-  if(counter == INPUT_SIZE || rc == '\n') {
-    counter = 0;
-    separate();
-    moveServo(ser, pos);
+//  char rc = Wire.read();
+//  piData[counter] = rc;
+//  counter++;
+//  if(counter == INPUT_SIZE || rc == '\n') {
+//    counter = 0;
+//    separate();
+//    moveServo(ser, pos);
+//  }
+  while(Wire.available()){
+    char rc = Wire.read();
+    if(counter != -1){
+    piData[counter] = rc;
+    }
+    counter++;
+    if(counter == INPUT_SIZE || rc == '\n')
+    {
+      counter = -1;
+      separate();
+    }
   }
 }
 
 void sendData() {
+  if(readCounter == 0) {
+    Wire.write(Temperature);
+    readCounter++;
+  }
+  else if(readCounter == 1) {
+    Wire.write(Voltage);
+    readCounter++;
+  }
+  else if(readCounter == 2) {
+    Position = map(Position, 0, 1023, 0, 255);
+    Wire.write(Position);
+    readCounter = 0;
+  }
 }
 
 void separate() {
@@ -50,6 +76,8 @@ void separate() {
   ser = atoi(piData);
   ++separator;
   pos = atoi(separator); 
+  Serial.println(ser);
+  Serial.println(pos);
 }
 
 void moveServo(int servo, int position) {

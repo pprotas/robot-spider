@@ -7,12 +7,13 @@ class Movement:
         self.address = address
 
     def writeByte(self, value):
-        for c in str(value):
-            self.bus.write_byte(self.address, ord(c))
-            time.sleep(0.1)
+        data = list(bytearray(value, 'ascii'))
+        print(data)
+        self.bus.write_i2c_block_data(self.address, 0, data)
         return -1
-    def readNumber():
-        number = self.bus.read_byte(address)
+        
+    def readNumber(self):
+        number = self.bus.read_byte(self.address)
         return number
 
     def move_servo(self, servo, position):
