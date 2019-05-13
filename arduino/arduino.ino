@@ -10,6 +10,8 @@ int ser, pos;
 int Temperature, Voltage, Position;
 int readCounter = 0;
 
+byte b[4] = {99, 223, 244};
+
 void setup() {
   Dynamixel.begin(1000000,2);
   Wire.begin(SLAVE_ADDRESS);
@@ -18,8 +20,8 @@ void setup() {
 }
 
 void loop() {
-  //checkStatus();
-  //moveServo(ser,pos);
+  checkStatus();
+  moveServo(ser,pos);
   delay(1000);
 }
 
@@ -39,24 +41,20 @@ void receiveData(int byteCount){
 }
 
 void sendData() {
-//  if(readCounter == 0) {
-//    Wire.write(Temperature);
-//    readCounter++;
-//  }
-//  else if(readCounter == 1) {
-//    Wire.write(Voltage);
-//    readCounter++;
-//  }
-//  else if(readCounter == 2) {
-//    Position = map(Position, 0, 1023, 0, 255);
-//    Wire.write(Position);
-//    readCounter = 0;
-//  }
-  Dynamixel.end();
-  Serial.begin(9600);
-  Serial.println("Request");
-  Serial.end();
-  Dynamixel.begin(1000000,2);
+  if(readCounter == 0) {
+    Wire.write(Temperature);
+    readCounter++;
+  }
+  else if(readCounter == 1) {
+    Wire.write(Voltage);
+    readCounter++;
+  }
+  else if(readCounter == 2) {
+    Position = map(Position, 0, 1023, 0, 255);
+    Wire.write(Position);
+    readCounter = 0;
+  }
+
 }
 
 void separate() {
@@ -65,8 +63,6 @@ void separate() {
   ser = atoi(piData);
   ++separator;
   pos = atoi(separator); 
-  Serial.println(ser);
-  Serial.println(pos);
 }
 
 void moveServo(int servo, int position) {

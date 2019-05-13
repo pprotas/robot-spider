@@ -21,11 +21,9 @@ class Communication:
     def status(self):
         while True:
             x = {
-                "type": "move",
+                "type": "status",
                 "message": {
-                    "type": "rotate",
-                    "direction": "left",
-                    "speed": "10000"
+                    "temp" : 
                 }
             }
 
@@ -33,6 +31,9 @@ class Communication:
             self.ws.send(y)
 
             time.sleep(5)
+            
+    def send(self, message):
+        thread.start_new(self.ws.send(message))
 
     def on_open(self):
         print("Connected.")
