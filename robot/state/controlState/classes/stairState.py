@@ -1,4 +1,4 @@
-from robot.state.controlState.controlState import ControlState
+from state.controlState.controlState import ControlState
 
 
 class StairState(ControlState):

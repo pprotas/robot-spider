@@ -17,16 +17,18 @@ class I2C:
         
     def getStatus(self):
         while True:
+            self.read()
             Temperature = self.read()
             print("Temperature: ", Temperature)
             Voltage = self.read()
             print("Voltage: ", Voltage)
             Position = self.read()
-            print("Position: ", Position*1023/255)
+            Position *= 1023/255
+            print("Position: ", Position)
             json = self.generateJSON(["Temperature", "Voltage", "Position"],[Temperature,Voltage,Position])
             print(json)
             self.controller.send(json)
-            time.sleep(3)
+            time.sleep(5)
         
     def generateJSON(self, keys, values):
         x = {

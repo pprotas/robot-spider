@@ -8,9 +8,7 @@ char piData[INPUT_SIZE];
 int counter = -1;
 int ser, pos;
 int Temperature, Voltage, Position;
-int readCounter = 0;
-
-byte b[4] = {99, 223, 244};
+int readCounter = -1;
 
 void setup() {
   Dynamixel.begin(1000000,2);
@@ -21,8 +19,7 @@ void setup() {
 
 void loop() {
   checkStatus();
-  moveServo(ser,pos);
-  delay(1000);
+  delay(100);
 }
 
 void receiveData(int byteCount){
@@ -41,7 +38,11 @@ void receiveData(int byteCount){
 }
 
 void sendData() {
-  if(readCounter == 0) {
+  if(readCounter == -1) {
+    Wire.write(2);
+    readCounter++;
+  }
+  else if(readCounter == 0) {
     Wire.write(Temperature);
     readCounter++;
   }
@@ -52,9 +53,8 @@ void sendData() {
   else if(readCounter == 2) {
     Position = map(Position, 0, 1023, 0, 255);
     Wire.write(Position);
-    readCounter = 0;
+    readCounter = -1;
   }
-
 }
 
 void separate() {

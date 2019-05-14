@@ -1,4 +1,4 @@
-from robot.i2c.i2c import I2C
+from i2c.i2c import I2C
 
 class Movement:
     def __init__(self, comm):
