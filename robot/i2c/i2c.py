@@ -2,12 +2,14 @@
 import smbus2
 import serial
 import time
+import json
 
 class I2C:
-    def __init__(self, address):
+    def __init__(self, controller, address):
+        self.controller = controller
         self.bus = smbus2.SMBus(1)
         self.address = address
-        print("I2C Ready")
+        print("I2C Readyyyyy")
         
     def writeByteBlock(self, value):
         data = list(bytearray(value, 'ascii'))
@@ -21,7 +23,22 @@ class I2C:
             print("Voltage: ", Voltage)
             Position = self.read()
             print("Position: ", Position*1023/255)
+            json = self.generateJSON(["Temperature", "Voltage", "Position"],[Temperature,Voltage,Position])
+            print(json)
+            self.controller.send(json)
             time.sleep(3)
+        
+    def generateJSON(self, keys, values):
+        x = {
+                "type": "status",
+                "message": {
+                }
+            }
+        
+        for i in range(len(keys)):
+            x["message"][keys[i]] = values[i]
+
+        return json.dumps(x)
     
     
     def read(self):
