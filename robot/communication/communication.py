@@ -1,10 +1,7 @@
 import websocket
 import json
 
-try:
-    import thread
-except ImportError:
-    import _thread as thread
+from threading import Thread
 import time
 
 
@@ -17,27 +14,17 @@ class Communication:
 
     def on_close(self):
         print("Close")
-
-    def status(self):
-        while True:
-            x = {
-                "type": "status",
-                "message": {
-                    "temp" : 
-                }
-            }
-
-            y = json.dumps(x)
-            self.ws.send(y)
-
-            time.sleep(5)
             
-    def send(self, message):
-        thread.start_new(self.ws.send(message))
+    def sendPendingMessages(self):
+        while True:
+            messages = self.controller.messages
+            if (len(messages) > 0):
+                self.ws.send(messages.pop())
+            time.sleep(0.05)
 
     def on_open(self):
-        print("Connected.")
-        thread.start_new(self.status)
+        print("Connecfted.")
+        Thread(target=self.sendPendingMessages).start()
 
     def handle_message(self, message):
         self.controller.notify(message)
