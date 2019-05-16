@@ -5,6 +5,9 @@ class Movement:
         self.comm = comm
         print("Movement ready")
         
-    def move_servo(self, servo, position):
-        s = f"{servo},{position}\n"
-        self.comm.writeByteBlock(s)
+    def move_servo(self, data):
+        self.comm.writeByteBlock(f"{data}\n")
+        
+##    def move_servo(self, servo, position):
+##        s = f"{servo},{position}\n"
+##        self.comm.writeByteBlock(s)

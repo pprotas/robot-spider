@@ -14,6 +14,7 @@ class I2C:
     def writeByteBlock(self, value):
         data = list(bytearray(value, 'ascii'))
         self.bus.write_i2c_block_data(self.address, 0, data)
+        time.sleep(0.05)
         
     def getStatus(self):
         while True:
@@ -25,7 +26,7 @@ class I2C:
             Position = self.read()
             Position *= 1023/255
             print("Position: ", Position)
-            json = self.generateJSON(["Temperature", "Voltage", "Position"],[Temperature,Voltage,Position])
+            json = self.generateJSON(["temp", "volt", "pos"],[Temperature,Voltage,Position])
             print(json)
             self.controller.send(json)
             time.sleep(5)
@@ -34,6 +35,7 @@ class I2C:
         x = {
                 "type": "status",
                 "message": {
+                    "status": "online"
                 }
             }
         

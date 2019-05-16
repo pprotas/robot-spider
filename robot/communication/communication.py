@@ -37,7 +37,7 @@ class Communication:
     def __init__(self, controller):
         print("Trying to start the websocket to the server")
         self.controller = controller
-        self.ws = websocket.WebSocketApp("ws://192.168.43.36:5000/connect/robot"
+        self.ws = websocket.WebSocketApp("ws://robot-spider-server.herokuapp.com/connect/robot"
                                          , on_message=self.on_message
                                          , on_error=self.on_error
                                          , on_close=self.on_close)
