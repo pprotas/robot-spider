@@ -1,10 +1,7 @@
 import websocket
 import json
 
-try:
-    import thread
-except ImportError:
-    import _thread as thread
+from threading import Thread
 import time
 
 
@@ -17,26 +14,17 @@ class Communication:
 
     def on_close(self):
         print("Close")
-
-    def status(self):
+            
+    def sendPendingMessages(self):
         while True:
-            x = {
-                "type": "move",
-                "message": {
-                    "type": "rotate",
-                    "direction": "left",
-                    "speed": "10000"
-                }
-            }
-
-            y = json.dumps(x)
-            self.ws.send(y)
-
-            time.sleep(5)
+            messages = self.controller.messages
+            if (len(messages) > 0):
+                self.ws.send(messages.pop())
+            time.sleep(0.05)
 
     def on_open(self):
-        print("Connected.")
-        thread.start_new(self.status)
+        print("Connecfted.")
+        Thread(target=self.sendPendingMessages).start()
 
     def handle_message(self, message):
         self.controller.notify(message)
@@ -49,7 +37,7 @@ class Communication:
     def __init__(self, controller):
         print("Trying to start the websocket to the server")
         self.controller = controller
-        self.ws = websocket.WebSocketApp("ws://192.168.43.36:5000/connect/robot"
+        self.ws = websocket.WebSocketApp("ws://robot-spider-server.herokuapp.com/connect/robot"
                                          , on_message=self.on_message
                                          , on_error=self.on_error
                                          , on_close=self.on_close)
