@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import math
 
-
 def main():
     video = cv2.VideoCapture(0)
 
@@ -12,10 +11,19 @@ def main():
 
         ret, thresh = cv2.threshold(gray, 120, 255, cv2.THRESH_BINARY)
         contours, hierarchy = cv2.findContours(thresh, 1, cv2.CHAIN_APPROX_NONE)
+        # hsvWit = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        # wit_lower = np.array([0, 0, 0])
+        # wit_higher = np.array([0, 0, 255])
+        # mask_wit = cv2.inRange(hsvWit, wit_lower, wit_higher)
+        # res = cv2.bitwise_and(frame, frame, mask=mask_wit)
+        # contours, hierarchy = cv2.findContours(mask_wit, 1, cv2.CHAIN_APPROX_NONE)
+        # contours = []
 
         blokArea = 0
         blok = None
         roi = None
+        superRoi = None
+        superBlok = None
         x, y, w, h = "", "", "", ""
 
         for i in range(len(contours)):
@@ -24,12 +32,11 @@ def main():
             roi = frame[y:y + h, x:x + w]
             hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
             blue_lower = np.array([100, 150, 0])
-            blue_upper = np.array([140, 255, 255])
-            mask = cv2.inRange(hsv, blue_lower, blue_upper)
+            blue_higher = np.array([140, 255, 255])
+            mask = cv2.inRange(hsv, blue_lower, blue_higher)
             blueContours, blueHierarchy = cv2.findContours(mask, 1, cv2.CHAIN_APPROX_NONE)
 
             try:
-                # frame = cv2.drawContours(frame, blueContours, -1, (0, 255, 0), 3)
                 update = False
                 for j in range(len(blueContours)):
                     bc = blueContours[j]
@@ -39,15 +46,22 @@ def main():
                         blok = bc
                         update = True
                     if update:
-                        roi = cv2.drawContours(roi, [blok], 0, (0, 255, 0), 3)
+                        superRoi = roi
+                        superBlok = blok
+                        update = False
 
             except:
                 print("no black")
 
-        frame[y:y + h, x:x + w] = roi
-        # cv2.imshow("img", roi)
-        cv2.imshow("mask", thresh)
-        cv2.imshow("frame", frame)
+        try:
+            if superRoi.any() and superBlok.any():
+                superRoi = cv2.drawContours(superRoi, [superBlok], 0, (0, 255, 0), 3)
+            # frame[y:y + h, x:x + w] = roi
+            cv2.imshow("img", roi)
+            cv2.imshow("mask", thresh)
+            cv2.imshow("frame", frame)
+        except:
+            print()
 
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
