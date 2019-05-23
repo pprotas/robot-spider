@@ -28,9 +28,9 @@ int afstand(int trigger, int echo){
   delayMicroseconds(10);
   digitalWrite(trigger, 0);
   tijd = pulseIn(echo, 1);
-//  if ((tijd * 0.0343 / 2) > 250) {
-//    return -1;
-//  }
+  if ((tijd * 0.0343 / 2) > 250) {
+    return -1;
+  }
   return tijd * 0.0343 / 2;
 }
 
