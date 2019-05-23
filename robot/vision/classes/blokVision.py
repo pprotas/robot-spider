@@ -4,6 +4,10 @@ import math
 
 def main():
     video = cv2.VideoCapture(0)
+    width = video.get(3)
+    height = video.get(4)
+    centerX = width/2;
+    centerY = height/2;
 
     while True:
         ret, frame = video.read()
@@ -56,7 +60,18 @@ def main():
         try:
             if superRoi.any() and superBlok.any():
                 superRoi = cv2.drawContours(superRoi, [superBlok], 0, (0, 255, 0), 3)
-            # frame[y:y + h, x:x + w] = roi
+
+                # centroid
+                M = cv2.moments(superBlok)
+                cX = int(M['m10'] / M['m00'])
+                cY = int(M['m01'] / M['m00'])
+                dinko = cv2.circle(superRoi, (cX, cY), 3, (0, 255, 255), -1)
+                if (cX > centerX):
+                    print("To right")
+                else:
+                    print("To left")
+
+
             cv2.imshow("img", roi)
             cv2.imshow("mask", thresh)
             cv2.imshow("frame", frame)
