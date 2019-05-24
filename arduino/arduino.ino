@@ -9,10 +9,10 @@
 #define in4 7
 
 #define SLAVE_ADDRESS 0x04
-#define INPUT_SIZE 9
+#define INPUT_SIZE 14
 
 char piData[INPUT_SIZE];
-int counter = -1;
+char delimiters[] = ",\n";
 int servo, data;
 int Temperature, Voltage, Position;
 int readCounter = -1;
@@ -38,6 +38,7 @@ void loop() {
 }
 
 void receiveData(int byteCount){
+  int counter = -1;
   while(Wire.available()){
     char rc = Wire.read();
     if(counter != -1){
@@ -46,7 +47,6 @@ void receiveData(int byteCount){
     counter++;
     if(counter == INPUT_SIZE || rc == '\n')
     {
-      counter = -1;
       separate();
       setDirection(servo);
     }
@@ -78,8 +78,8 @@ void separate() {
   *separator = 0;
   servo = atoi(piData);
   ++separator;
-  data = atoi(separator); 
-}
+  data = atoi(separator);
+} 
 
 void setDirection(int servo) {
   if (servo > 90){
@@ -108,13 +108,38 @@ void setDirection(int servo) {
      case 96:
        digitalWrite(in3, LOW);
        digitalWrite(in4, LOW);
+       break;
+      case 97:
+        digitalWrite(in1, LOW);
+        digitalWrite(in2, HIGH);
+        digitalWrite(in3, HIGH);
+        digitalWrite(in4, LOW);
+        break;
+      case 98:
+        digitalWrite(in1, HIGH);
+        digitalWrite(in2, LOW);
+        digitalWrite(in3, LOW);
+        digitalWrite(in4, HIGH);
+        break;
+      case 99:
+        digitalWrite(in1, LOW);
+        digitalWrite(in2, LOW);
+        digitalWrite(in3, LOW);
+        digitalWrite(in4, LOW);
+        break;
     }
   }
 }
 
 void moveServo(int servo, int data) {
   if(servo < 90 || servo == 254){
-    Dynamixel.moveSpeed(servo, data, 100);
+    Dynamixel.moveSpeed(servo, data, 500);
+  }
+  else if(servo == 91 || servo == 93 || servo == 95) {
+    analogWrite(enA, data); // Send PWM signal to motor A
+  }
+  else if(servo == 92 || servo == 95 || servo == 96) {   
+    analogWrite(enB, data); // Send PWM signal to motor B
   }
   else {
     analogWrite(enA, data); // Send PWM signal to motor A

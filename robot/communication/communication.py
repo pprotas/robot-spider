@@ -23,7 +23,7 @@ class Communication:
             time.sleep(0.05)
 
     def on_open(self):
-        print("Connecfted.")
+        print("Connected to server")
         Thread(target=self.sendPendingMessages).start()
 
     def handle_message(self, message):
@@ -37,7 +37,7 @@ class Communication:
     def __init__(self, controller):
         print("Trying to start the websocket to the server")
         self.controller = controller
-        self.ws = websocket.WebSocketApp("ws://robot-spider-server.herokuapp.com/connect/robot"
+        self.ws = websocket.WebSocketApp("wss://robot-spider-server.herokuapp.com/connect/robot"
                                          , on_message=self.on_message
                                          , on_error=self.on_error
                                          , on_close=self.on_close)
