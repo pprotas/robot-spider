@@ -6,8 +6,11 @@ def main():
     video = cv2.VideoCapture(0)
     width = video.get(3)
     height = video.get(4)
-    centerX = width/2;
-    centerY = height/2;
+    deadzone = 10
+    centerX = width/2
+    centerY = height/2
+    xDeadzoneMax = centerX + deadzone
+    xDeadzoneMin = centerX - deadzone
 
     while True:
         ret, frame = video.read()
@@ -15,13 +18,6 @@ def main():
 
         ret, thresh = cv2.threshold(gray, 120, 255, cv2.THRESH_BINARY)
         contours, hierarchy = cv2.findContours(thresh, 1, cv2.CHAIN_APPROX_NONE)
-        # hsvWit = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        # wit_lower = np.array([0, 0, 0])
-        # wit_higher = np.array([0, 0, 255])
-        # mask_wit = cv2.inRange(hsvWit, wit_lower, wit_higher)
-        # res = cv2.bitwise_and(frame, frame, mask=mask_wit)
-        # contours, hierarchy = cv2.findContours(mask_wit, 1, cv2.CHAIN_APPROX_NONE)
-        # contours = []
 
         blokArea = 0
         blok = None
@@ -66,10 +62,17 @@ def main():
                 cX = int(M['m10'] / M['m00'])
                 cY = int(M['m01'] / M['m00'])
                 dinko = cv2.circle(superRoi, (cX, cY), 3, (0, 255, 255), -1)
-                if (cX > centerX):
-                    print("To right")
-                else:
-                    print("To left")
+
+                try:
+                    # print(cX, xDeadzoneMin, xDeadzoneMax)
+                    if cX > xDeadzoneMax:
+                        print("To right")
+                    elif cX < xDeadzoneMin:
+                        print("To left")
+                    else:
+                        print("Deadzone")
+                except:
+                    print("No cX")
 
 
             cv2.imshow("img", roi)
@@ -78,11 +81,10 @@ def main():
         except:
             print()
 
-
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-        #video.release()
-        #cv2.destroyAllWindows()
+            video.release()
+            cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
