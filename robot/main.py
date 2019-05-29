@@ -6,7 +6,7 @@ if __name__ == '__main__':
     controller = Controller()
     try:
         controller.start()
-    except (KeyboardInterrupt, SystemExit):
+    except (KeyboardInterrupt, SystemExit): # Close the program on CTRL+C
         print("\nShutting down")
         controller.movement.move_servo("99,0")
 

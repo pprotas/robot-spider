@@ -10,19 +10,20 @@ class Controller:
     def __init__(self):
         print("Controller started")
         self.messages = []
+        # Movement center with connection to Arduino
         self.i2c = I2C(self, 4)
         self.movement = Movement(self.i2c)
         
     
     def start(self):
+        # Connection to webserver
         Thread(target=Socket(self).start, daemon=True).start()
-        Thread(target=self.i2c.get_status, daemon=True).start()
         input()
-        
     
     def handle_message(self, message):
         j = json.loads(message)
         type = j["type"]
+        # Choose appropriate movement command
         if(type == "move_motor"):
             self.movement.move(move)
         elif(type == "move_arm"):
