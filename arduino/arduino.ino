@@ -1,6 +1,8 @@
 #include <DynamixelSerial.h>
 #include <Wire.h>
 
+#define dp  2 // Servo control pin
+
 #define enA 9
 #define in1 4
 #define in2 5
@@ -8,16 +10,16 @@
 #define in3 6
 #define in4 7
 
-#define SLAVE_ADDRESS 0x04
-#define INPUT_SIZE 14
+#define pp  A0 // Analog potentiometer pin
+
+#define SLAVE_ADDRESS  0x04
+#define INPUT_SIZE     14
 
 char piData[INPUT_SIZE];
 char delimiters[] = ",\n";
-int servo, data;
-int temperature, warmestServo;
+int servo, data; // Variables received from rPi
+int temperature, warmestServo, sound; // Variables to be sent to rPi
 int readCounter = -1;
-int motorSpeedA = 0;
-int motorSpeedB = 0;
 
 void setup() {
   pinMode(enA, OUTPUT);
@@ -26,15 +28,15 @@ void setup() {
   pinMode(in2, OUTPUT);
   pinMode(in3, OUTPUT);
   pinMode(in4, OUTPUT);
-  Dynamixel.begin(1000000,2);
+  Dynamixel.begin(1000000,dp);
   Wire.begin(SLAVE_ADDRESS);
   Wire.onReceive(receiveData);
   Wire.onRequest(sendData);
 }
 
 void loop() {
-  checkStatus();
   moveServo(servo, data);
+  checkStatus();
 }
 
 void receiveData(int byteCount){
@@ -60,6 +62,10 @@ void sendData() {
   }
   else if(readCounter == 0) {
     Wire.write(warmestServo);
+    readCounter++;
+  }
+  else if(readCounter == 1) {
+    Wire.write(sound);
     readCounter = -1;
   }
 }
@@ -140,7 +146,16 @@ void moveServo(int servo, int data) {
 
 void checkStatus() {
   int readTemp, currentServo;
-  for(int i = 1; i <= 5; i++) {
+  sound = analogRead(pp);
+  Serial.println(sound);
+  //sound = map(sound, <low>, <high>, 0, 100);
+  currentServo = 1;
+  readTemp = Dynamixel.readTemperature(1);
+  if(temperature < readTemp) {
+    temperature = readTemp;
+    warmestServo = 1;
+  }
+  for(int i = 1; i < 5; i++) {
     currentServo = i*10;
     readTemp = Dynamixel.readTemperature(currentServo);
     if(temperature < readTemp) {

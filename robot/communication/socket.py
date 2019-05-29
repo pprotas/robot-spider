@@ -26,7 +26,6 @@ class Socket:
     def on_open(self):
         print("Connected to server.")
         Thread(target=self.sendPendingMessages, daemon=True).start()
-        Thread(target=self.controller.i2c.get_status, daemon=True).start()
 
 
     def start(self):

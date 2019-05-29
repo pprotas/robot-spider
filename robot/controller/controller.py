@@ -18,6 +18,8 @@ class Controller:
     def start(self):
         # Connection to webserver
         Thread(target=Socket(self).start, daemon=True).start()
+        # Status checker
+        Thread(target=self.i2c.get_status, daemon=True).start()
         input()
     
     def handle_message(self, message):
