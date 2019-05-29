@@ -1,8 +1,6 @@
-# from smbus2 import SMBus # Deze line zal crashen op Windows systemen.
 import smbus2
-import serial
 import time
-import json
+import communication.json_gen as jg
 
 class I2C:
     def __init__(self, controller, address):
@@ -15,19 +13,16 @@ class I2C:
         data = list(bytearray(value, 'ascii'))
         self.bus.write_i2c_block_data(self.address, 0, data)
         time.sleep(0.05)
-        
-    def get_status(self):
-        while True:
-            self.read()
-            temperature = self.read()
-            voltage = self.read()
-            position = self.read()
-            position *= 1023/255
-            json = self.controller.generate_json(["temp", "volt", "pos"],[temperature,voltage,position])
-            self.controller.send(json)
-            time.sleep(5)
-    
     
     def read(self):
         data = self.bus.read_byte(self.address)
         return data
+    
+    def get_status(self):
+        while True:
+            self.read()
+            temperature = self.read()
+            servo = self.read()
+            json = jg.generate_json(["highestTemperature", "servoID"],[temperature,servo])
+            self.controller.send(json)
+            time.sleep(5)

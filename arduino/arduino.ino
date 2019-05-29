@@ -14,7 +14,7 @@
 char piData[INPUT_SIZE];
 char delimiters[] = ",\n";
 int servo, data;
-int Temperature, Voltage, Position;
+int temperature, warmestServo;
 int readCounter = -1;
 int motorSpeedA = 0;
 int motorSpeedB = 0;
@@ -55,20 +55,11 @@ void receiveData(int byteCount){
 
 void sendData() {
   if(readCounter == -1) {
-    Wire.write(2);
+    Wire.write(temperature);
     readCounter++;
   }
   else if(readCounter == 0) {
-    Wire.write(Temperature);
-    readCounter++;
-  }
-  else if(readCounter == 1) {
-    Wire.write(Voltage);
-    readCounter++;
-  }
-  else if(readCounter == 2) {
-    Position = map(Position, 0, 1023, 0, 255);
-    Wire.write(Position);
+    Wire.write(warmestServo);
     readCounter = -1;
   }
 }
@@ -133,7 +124,7 @@ void setDirection(int servo) {
 
 void moveServo(int servo, int data) {
   if(servo < 90 || servo == 254){
-    Dynamixel.moveSpeed(servo, data, 500);
+    Dynamixel.moveSpeed(servo, data, 200);
   }
   else if(servo == 91 || servo == 93 || servo == 95) {
     analogWrite(enA, data); // Send PWM signal to motor A
@@ -148,9 +139,15 @@ void moveServo(int servo, int data) {
 }
 
 void checkStatus() {
-  Temperature = Dynamixel.readTemperature(1);
-  Voltage = Dynamixel.readVoltage(1);
-  Position = Dynamixel.readPosition(1);
+  int readTemp, currentServo;
+  for(int i = 1; i <= 5; i++) {
+    currentServo = i*10;
+    readTemp = Dynamixel.readTemperature(currentServo);
+    if(temperature < readTemp) {
+      temperature = readTemp;
+      warmestServo = currentServo;
+    }
+  }
 }
 
 

@@ -1,10 +1,9 @@
-from communication.communication import Communication
+from communication.socket import Socket
+from communication.i2c import I2C
 from movement.movement import Movement, map_position
-from i2c.i2c import I2C
 from threading import Thread
 import time
 import json
-import random
 
 class Controller:
 
@@ -13,41 +12,22 @@ class Controller:
         self.messages = []
         self.i2c = I2C(self, 4)
         self.movement = Movement(self.i2c)
-        #self.movement.move_servo(map_position(254,90))
-        #self.movement.grab_object(16)
         
     
     def start(self):
-        Thread(target=Communication(self).start).start()
-        Thread(target=self.i2c.get_status).start()
-        while True:
-            self.movement.grab_object(16)
-            time.sleep(2)
-            self.movement.move_servo(map_position(254,90))
-            time.sleep(2)
-            input()
+        Thread(target=Socket(self).start, daemon=True).start()
+        Thread(target=self.i2c.get_status, daemon=True).start()
+        input()
+        
     
-    def notify(self, message):
+    def handle_message(self, message):
         j = json.loads(message)
         type = j["type"]
-        if(type == "move"):
-            move = j["message"]["move"]
+        if(type == "move_motor"):
             self.movement.move(move)
+        elif(type == "move_arm"):
+            self.movement.move(move, "arm")
             
     
     def send(self, json):
         self.messages.append(json)
-
-
-    def generate_json(self, keys, values):
-        x = {
-                "type" : "status",
-                "message" : {
-                    "status" : "online"
-                    }
-            }
-        
-        for i in range(len(keys)):
-            x["message"][keys[i]] = values[i]
-            
-        return json.dumps(x)

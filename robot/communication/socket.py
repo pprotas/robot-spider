@@ -5,29 +5,28 @@ from threading import Thread
 import time
 
 
-class Communication:
+class Socket:
     def on_message(self, message):
-        self.handle_message(message)
+        self.controller.handle_message(message)
 
     def on_error(self):
         print("Error")
 
     def on_close(self):
-        print("Close")
+        print("No connection to server.")
+        time.sleep(3)
             
     def sendPendingMessages(self):
         while True:
             messages = self.controller.messages
-            if (len(messages) > 0):
+            if (len(messages)):
                 self.ws.send(messages.pop())
             time.sleep(0.05)
 
     def on_open(self):
-        print("Connected to server")
-        Thread(target=self.sendPendingMessages).start()
+        print("Connected to server.")
+        Thread(target=self.sendPendingMessages, daemon=True).start()
 
-    def handle_message(self, message):
-        self.controller.notify(message)
 
     def start(self):
         while True:

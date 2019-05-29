@@ -1,4 +1,4 @@
-from i2c.i2c import I2C
+from communication.i2c import I2C
 import math
 
 class Movement:
@@ -18,7 +18,7 @@ class Movement:
         a2 = a*a
         b2 = b*b
         distance2 = distance*distance
-        y = 8
+        y = -2
         y2 = y*y
         x = math.sqrt(distance2 - y2)
         xp = x - c
@@ -49,7 +49,9 @@ class Movement:
         print("Moving to object")
 
     def move(self, move, mode="tank"):
+        print("Moving")
         if (mode == "tank"):
+            print("tank")
             # instructies om spin vooruit te laten bewegen met rupsbanden
             motorA = move["a"]
             motorB = move["b"]
@@ -57,6 +59,27 @@ class Movement:
             print(motorB)
             self.move_servo(motorA)
             self.move_servo(motorB)
+            
+        elif (mode == "arm"):
+            print("arm")
+            moveA = move["a"]
+            moveB = move["b"]
+            
+            self.move_servo(moveA)
+            self.move_servo(moveB)
+            
+            valueA = int(moveA.split(",")[1])
+            valueA = translate(valueA, 205, 818, 0, 180)
+            valueB = int(moveB.split(",")[1])
+            valueB = translate(valueB, 205, 818, 0, 180)
+            print(valueA)
+            print(valueB)
+            valueC = 90 - (valueA - (90 - valueB))
+            
+            if(valueC >= 0 or valueC <= 180):
+                moveC = map_position(3, valueC)
+                print(moveC)
+                self.move_servo(moveC)
             
         elif (mode == "spider"):
             # spin beweging
