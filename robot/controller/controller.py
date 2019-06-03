@@ -20,11 +20,13 @@ class Controller:
         Thread(target=Socket(self).start, daemon=True).start()
         # Status checker
         Thread(target=self.i2c.get_status, daemon=True).start()
+        #self.movement.move_servo("97,100")
         input()
         
     def handle_message(self, message):
         j = json.loads(message)
         type = j["type"]
+        move = j["message"]["move"]
         # Choose appropriate movement command
         if(type == "move_motor"):
             self.movement.move(move)

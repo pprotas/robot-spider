@@ -49,9 +49,7 @@ class Movement:
         print("Moving to object")
 
     def move(self, move, mode="tank"):
-        print("Moving")
         if (mode == "tank"):
-            print("tank")
             # instructies om spin vooruit te laten bewegen met rupsbanden
             motorA = move["a"]
             motorB = move["b"]
@@ -61,7 +59,6 @@ class Movement:
             self.move_servo(motorB)
             
         elif (mode == "arm"):
-            print("arm")
             moveA = move["a"]
             moveB = move["b"]
             
