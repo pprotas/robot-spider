@@ -9,7 +9,7 @@ if __name__ == '__main__':
     except (KeyboardInterrupt, SystemExit): # Close the program on CTRL+C
         print("\nShutting down")
         controller.movement.move_servo("99,0")
-
+        controller.movement.move_servo("254,500")
         try:
             sys.exit(0)
         except SystemExit:

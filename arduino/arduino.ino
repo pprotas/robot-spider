@@ -148,7 +148,7 @@ void checkStatus() {
   int readTemp, currentServo;
   sound = analogRead(pp);
   Serial.println(sound);
-  //sound = map(sound, <low>, <high>, 0, 100);
+  sound = map(sound, 0, 1023, 0, 99);
   currentServo = 1;
   readTemp = Dynamixel.readTemperature(1);
   if(temperature < readTemp) {
