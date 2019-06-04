@@ -39,7 +39,6 @@ class SocketAI:
                         self.ws.send(base64image)
                         self.ws.send("<EOF>")
                         self.send = False
-                    time.sleep(0.25)
             except:
                 print("error while creating and sending images")
             finally:
@@ -66,5 +65,3 @@ class SocketAI:
                                          , on_error=self.on_error
                                          , on_close=self.on_close)
         self.ws.on_open = self.on_open
-
-
