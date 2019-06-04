@@ -20,7 +20,7 @@ class Controller:
         Thread(target=Socket(self).start, daemon=True).start()
         # Status checker
         Thread(target=self.i2c.get_status, daemon=True).start()
-        #self.movement.move_servo("97,100")
+        self.movement.move_servo("254,200")
         input()
         
     def handle_message(self, message):
@@ -32,6 +32,8 @@ class Controller:
             self.movement.move(move)
         elif(type == "move_arm"):
             self.movement.move(move, "arm")
+        elif(type == "toggle_dance"):
+            self.movement.dancing = move["value"]
             
     
     def send(self, json):

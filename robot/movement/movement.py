@@ -1,9 +1,14 @@
 from communication.i2c import I2C
+from threading import Thread
 import math
+import time
 
 class Movement:
     def __init__(self, comm):
         self.comm = comm
+        self.dancing = False
+        self.sound = 0
+        #Thread(target=self.dance, daemon=True).start()
         print("Movement ready")
         
     def move_servo(self, data):
@@ -47,7 +52,15 @@ class Movement:
     def move_to_object(self, distance):
         # instructies om de robot recht voor het object te plaatsen gegeven de afstand
         print("Moving to object")
-
+        
+    def dance(self):
+        while True:   
+            if self.dancing:
+                #self.move_servo(map_position(1,self.sound))
+                #time.sleep(1)
+                pass
+    
+    
     def move(self, move, mode="tank"):
         if (mode == "tank"):
             # instructies om spin vooruit te laten bewegen met rupsbanden
