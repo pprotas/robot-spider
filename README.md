@@ -35,7 +35,7 @@ Om alle dependencies te installeren voor dit project: ```python -m pip install -
 ### Eigen dependencies toevoegen
 **Voer eerst de bovenstaande stap uit. Kijk ook goed dat je werkelijk in de virtual environment zit, anders worden alle Python packages op je computer in de requirements.txt gezet (laat staan dat het dan waarschijnlijk een foute Python versie zal gebruiken).**
 
-In het geval dat je nieuwe packages installeert die nodig zijn om jouw code te laten werken voer de commando ```python -m pip freeze > requirements``` uit terwijl je je in de virtual environment bevindt.
+In het geval dat je nieuwe packages installeert die nodig zijn om jouw code te laten werken voer de commando ```python -m pip freeze > requirements.txt``` uit terwijl je je in de virtual environment bevindt.
 ## Testen
 De tests bevinden zich in de ```tests/``` directory. Om tests uit te voeren gebruik je de commando ```python -m pytest```.
 ## Werking
