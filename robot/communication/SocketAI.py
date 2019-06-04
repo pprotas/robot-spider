@@ -38,6 +38,7 @@ class SocketAI:
                         base64image = base64.b64encode(image)
                         self.ws.send(base64image)
                         self.ws.send("<EOF>")
+                        print("verzonden image")
                         self.send = False
             except:
                 print("error while creating and sending images")
