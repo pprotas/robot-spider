@@ -1,12 +1,7 @@
 from communication.socket import Socket
-<<<<<<< HEAD
+from communication.SocketAI import SocketAI
 from communication.i2c import I2C
 from movement.movement import Movement
-=======
-from communication.SocketAI import SocketAI
-#from communication.i2c import I2C
-#from movement.movement import Movement, map_position
->>>>>>> 4f0bcda5b9fb9e0c4ddaa89db4da3ceffbd4d74d
 from threading import Thread
 import time
 import json
