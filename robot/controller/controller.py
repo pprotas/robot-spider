@@ -1,6 +1,6 @@
 from communication.socket import Socket
 from communication.i2c import I2C
-from movement.movement import Movement, map_position
+from movement.movement import Movement
 from threading import Thread
 import time
 import json
@@ -20,11 +20,12 @@ class Controller:
         Thread(target=Socket(self).start, daemon=True).start()
         # Status checker
         Thread(target=self.i2c.get_status, daemon=True).start()
-        self.movement.move_servo("254,200")
+        self.movement.move_servo("20,100")
         input()
         
     def handle_message(self, message):
         j = json.loads(message)
+        print(message)
         type = j["type"]
         move = j["message"]["move"]
         # Choose appropriate movement command

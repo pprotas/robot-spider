@@ -131,7 +131,7 @@ void setDirection(int servo) {
 
 void moveServo(int servo, int data) {
   if(servo < 90 || servo == 254){
-    Dynamixel.moveSpeed(servo, data, 200);
+    Dynamixel.moveSpeed(servo, data, 1023);
   }
   else if(servo == 91 || servo == 93 || servo == 95) {
     analogWrite(enA, data); // Send PWM signal to motor A
@@ -148,10 +148,10 @@ void moveServo(int servo, int data) {
 void checkStatus() {
   int readTemp, currentServo;
   sound = analogRead(pp);
-  Serial.println(sound);
   sound = map(sound, 0, 1023, 0, 99);
   currentServo = 1;
   readTemp = Dynamixel.readTemperature(1);
+  int temptemp = readTemp;
   if(temperature < readTemp) {
     temperature = readTemp;
     warmestServo = 1;

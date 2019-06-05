@@ -25,4 +25,6 @@ class I2C:
             sound = self.read()
             self.controller.movement.sound = sound
             json = jg.generate_json(["temp", "servoID", "sound"],[temperature,servo,sound])
+            print(json)
             self.controller.send(json)
+            time.sleep(5)

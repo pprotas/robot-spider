@@ -6,9 +6,9 @@ import time
 class Movement:
     def __init__(self, comm):
         self.comm = comm
-        self.dancing = False
+        self.dancing = True
         self.sound = 0
-        #Thread(target=self.dance, daemon=True).start()
+        Thread(target=self.dance, daemon=True).start()
         print("Movement ready")
         
     def move_servo(self, data):
@@ -23,7 +23,7 @@ class Movement:
         a2 = a*a
         b2 = b*b
         distance2 = distance*distance
-        y = -2
+        y = 2
         y2 = y*y
         x = math.sqrt(distance2 - y2)
         xp = x - c
@@ -45,21 +45,23 @@ class Movement:
         
         q3 = q1 - q2
         
-        self.move_servo(map_position(1,q1))
-        self.move_servo(map_position(2,90-q2))
-        self.move_servo(map_position(3,90-q3))
+        self.move_servo(degree_to_position(1,q1))
+        self.move_servo(degree_to_position(2,90-q2))
+        self.move_servo(degree_to_position(3,90-q3))
         
     def move_to_object(self, distance):
         # instructies om de robot recht voor het object te plaatsen gegeven de afstand
         print("Moving to object")
         
     def dance(self):
+        previous = self.sound
         while True:   
             if self.dancing:
-                #self.move_servo(map_position(1,self.sound))
-                #time.sleep(1)
-                pass
-    
+                if(not(previous - 10 <= self.sound <= previous + 10)):
+                    previous = self.sound
+                    self.move_servo(percentage_to_position(1,self.sound))
+                    time.sleep(0.2)
+            time.sleep(0.1)
     
     def move(self, move, mode="tank"):
         if (mode == "tank"):
@@ -87,7 +89,7 @@ class Movement:
             valueC = 90 - (valueA - (90 - valueB))
             
             if(valueC >= 0 or valueC <= 180):
-                moveC = map_position(3, valueC)
+                moveC = degree_to_position(3, valueC)
                 print(moveC)
                 self.move_servo(moveC)
             
@@ -95,10 +97,14 @@ class Movement:
             # spin beweging
             print("Moving forward as spider")
             
-def map_position(servo, degrees):
+def degree_to_position(servo, degrees):
     pos = translate(degrees, 0, 180, 205, 818)
     return f"{servo},{pos}"
     
+def percentage_to_position(servo, percentage):
+    pos = translate(percentage, 0, 100, 205, 818)
+    return f"{servo},{pos}"
+
 def translate(value, left_min, left_max, right_min, right_max):
     leftSpan = left_max - left_min
     rightSpan = right_max - right_min
