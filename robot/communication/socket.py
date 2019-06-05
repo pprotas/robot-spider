@@ -15,10 +15,6 @@ class Socket:
     def on_close_main(self):
         print("No connection to main server.")
         time.sleep(3)
-        
-    def on_close_ai(self):
-        print("No connection to AI server.")
-        time.sleep(3)
             
     def sendPendingMessages(self):
         while True:
@@ -45,8 +41,3 @@ class Socket:
                                          on_error=self.on_error,
                                          on_close=self.on_close_main,
                                          on_open=self.on_open)
-        self.ws_ai = websocket.WebSocketApp("wss://robot-spider-server.herokuapp.com/connect/robot",
-                                            on_message=self.on_message,
-                                            on_error=self.on_error,
-                                            on_close=self.on_close_ai,
-                                            on_open=self.on_open)
