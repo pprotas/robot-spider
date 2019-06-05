@@ -36,19 +36,12 @@ class Controller:
         type = j["type"]
         move = j["message"]["move"]
         # Choose appropriate movement command
-<<<<<<< HEAD
         if(type == "move_motor"):
             self.movement.move(move)
         elif(type == "move_arm"):
             self.movement.move(move, "arm")
         elif(type == "toggle_dance"):
             self.movement.dancing = move["value"]
-=======
-        #if(type == "move_motor"):
-            #self.movement.move(move)
-        #elif(type == "move_arm"):
-            #self.movement.move(move, "arm")
->>>>>>> 4f0bcda5b9fb9e0c4ddaa89db4da3ceffbd4d74d
             
     
     def send(self, json):
