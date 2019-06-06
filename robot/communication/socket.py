@@ -7,6 +7,8 @@ import time
 
 class Socket:
     def on_message(self, message):
+        print("Message received")
+        print(message)
         self.controller.handle_message(message)
 
     def on_error(self):

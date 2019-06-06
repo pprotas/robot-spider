@@ -6,7 +6,7 @@ import time
 class Movement:
     def __init__(self, comm):
         self.comm = comm
-        self.dancing = True
+        self.dancing = False
         self.sound = 0
         Thread(target=self.dance, daemon=True).start()
         print("Movement ready")
@@ -57,10 +57,10 @@ class Movement:
         previous = self.sound
         while True:   
             if self.dancing:
-                if(not(previous - 10 <= self.sound <= previous + 10)):
+                print(self.sound)
+                if(not(previous - 5 <= self.sound <= previous + 5)):
                     previous = self.sound
                     self.move_servo(percentage_to_position(1,self.sound))
-                    time.sleep(0.2)
             time.sleep(0.1)
     
     def move(self, move, mode="tank"):
