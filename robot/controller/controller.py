@@ -26,18 +26,20 @@ class Controller:
         
     def handle_message(self, message):
         j = json.loads(message)
-        print(message)
         type = j["type"]
-        move = j["message"]["move"]
         # Choose appropriate movement command
         if(type == "move_motor"):
+            move = j["message"]["move"]
             self.movement.move(move)
         elif(type == "move_arm"):
+            move = j["message"]["move"]
             self.movement.move(move, "arm")
         elif(type == "toggle_dance"):
-            self.movement.dancing = move["value"]
+            value = j["message"]["value"]
+            self.movement.dancing = value
         elif(type == "grab_object"):
-            self.movement.grab_object(move["value"])
+            distance = j["message"]["distance"]
+            self.movement.grab_object(distance)
             
     
     def send(self, json):

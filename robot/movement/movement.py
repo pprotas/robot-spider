@@ -7,7 +7,9 @@ class Movement:
     def __init__(self, comm):
         self.comm = comm
         self.dancing = False
-        self.sound = 0
+        self.sound0 = 0
+        self.sound1 = 0
+        self.sound2 = 0
         Thread(target=self.dance, daemon=True).start()
         
     def move_servo(self, data):

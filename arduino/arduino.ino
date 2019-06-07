@@ -10,7 +10,9 @@
 #define in3 6
 #define in4 7
 
-#define pp  A0 // Analog potentiometer pin
+#define vu0  A0 // VU
+#define vu1  A1
+#define vu2  A2
 
 #define SLAVE_ADDRESS  0x04
 #define INPUT_SIZE     14
@@ -18,7 +20,7 @@
 char piData[INPUT_SIZE];
 char delimiters[] = ",\n";
 int servo, data; // Variables received from rPi
-int temperature, warmestServo, sound; // Variables to be sent to rPi
+int temperature, warmestServo, sound0, sound1, sound2; // Variables to be sent to rPi
 int readCounter = -1;
 
 void setup() {
@@ -66,7 +68,15 @@ void sendData() {
     readCounter++;
   }
   else if(readCounter == 1) {
-    Wire.write(sound);
+    Wire.write(sound0);
+    readCounter++;
+  }
+  else if(readCounter == 2) {
+    Wire.write(sound1);
+    readCounter++;
+  }
+  else if(readCounter == 3) {
+    Wire.write(sound2);
     readCounter = -1;
   }
 }
@@ -147,8 +157,12 @@ void moveServo(int servo, int data) {
 
 void checkStatus() {
   int readTemp, currentServo;
-  sound = analogRead(pp);
-  sound = map(sound, 0, 1023, 0, 99);
+  sound0 = analogRead(vu0);
+  sound0 = map(sound0, 0, 1023, 0, 99);
+  sound1 = analogRead(vu1);
+  sound1 = map(sound1, 0, 1023, 0, 99);
+  sound2 = analogRead(vu2);
+  sound2 = map(sound2, 0, 1023, 0, 99);
   currentServo = 1;
   readTemp = Dynamixel.readTemperature(1);
   int temptemp = readTemp;
