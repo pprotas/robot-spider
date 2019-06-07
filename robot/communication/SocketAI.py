@@ -7,7 +7,6 @@ from PIL import Image
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 import io
-import numpy as np
 
 
 class SocketAI:
@@ -15,9 +14,7 @@ class SocketAI:
     send = True
 
     def on_message(self, message):
-        self.handle_message(message)
-        print((time.time() - self.dinko)*1000)
-        self.send = True
+        self.controller.handle_message(message)
 
     def on_error(self):
         print("Error")
@@ -48,7 +45,6 @@ class SocketAI:
                     self.ws.send("img ")
                     self.ws.send(base64image)
                     self.ws.send("<EOF>")
-                    print("Send")
                     self.send = False
                     rawCapture.truncate(0)
             except:
@@ -57,7 +53,7 @@ class SocketAI:
                 running = False
 
     def on_open(self):
-        print("Connected to server")
+        print("Connected to AI server")
         time.sleep(3)
         self.ws.send("mode block")
         self.ws.send("<EOF>")
@@ -72,12 +68,13 @@ class SocketAI:
             self.ws.run_forever()
             time.sleep(1)
 
-    def __init__(self):
+    def __init__(self, controller):
         print("Trying to connect to the server")
         self.ws = websocket.WebSocketApp("ws://141.252.29.41:5000/"
                                          , on_message=self.on_message
                                          , on_error=self.on_error
                                          , on_close=self.on_close)
         self.ws.on_open = self.on_open
+        self.controller = controller
 
 
