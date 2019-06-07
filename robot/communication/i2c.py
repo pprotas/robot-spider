@@ -9,7 +9,6 @@ class I2C:
         self.bus = smbus2.SMBus(1)
         self.address = address
         self.json = ""
-        print("I2C Started")
         
     def write_byte_block(self, value):
         data = list(bytearray(value, 'ascii'))

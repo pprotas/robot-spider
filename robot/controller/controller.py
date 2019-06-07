@@ -9,7 +9,7 @@ import json
 class Controller:
 
     def __init__(self):
-        print("Controller started")
+        print("Program started")
         self.messages = []
         # Movement center with connection to Arduino
         self.i2c = I2C(self, 4)

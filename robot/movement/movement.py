@@ -9,7 +9,6 @@ class Movement:
         self.dancing = False
         self.sound = 0
         Thread(target=self.dance, daemon=True).start()
-        print("Movement ready")
         
     def move_servo(self, data):
         self.comm.write_byte_block(f"{data}\n")
