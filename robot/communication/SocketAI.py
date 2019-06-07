@@ -28,29 +28,30 @@ class SocketAI:
         running = True
 
         while running:
-            try:
-                camera = PiCamera()
-                camera.resolution = (384, 216)
-                rawCapture = PiRGBArray(camera, size=(384, 216))
+            if self.send:
+                try:
+                    camera = PiCamera()
+                    camera.resolution = (384, 216)
+                    rawCapture = PiRGBArray(camera, size=(384, 216))
 
-                for frame in camera.capture_continuous(rawCapture, format="rgb", use_video_port=True):
-                    rawCapture.truncate()
-                    rawCapture.seek(0)
-                    self.dinko = time.time()
-                    img = Image.fromarray(frame.array)
-                    imgByteArr = io.BytesIO()
-                    img.save(imgByteArr, format='JPEG')
+                    for frame in camera.capture_continuous(rawCapture, format="rgb", use_video_port=True):
+                        rawCapture.truncate()
+                        rawCapture.seek(0)
+                        self.dinko = time.time()
+                        img = Image.fromarray(frame.array)
+                        imgByteArr = io.BytesIO()
+                        img.save(imgByteArr, format='JPEG')
 
-                    base64image = base64.b64encode(imgByteArr.getvalue())
-                    self.ws.send("img ")
-                    self.ws.send(base64image)
-                    self.ws.send("<EOF>")
-                    self.send = False
-                    rawCapture.truncate(0)
-            except:
-                print("error while creating and sending images")
-            finally:
-                running = False
+                        base64image = base64.b64encode(imgByteArr.getvalue())
+                        self.ws.send("img ")
+                        self.ws.send(base64image)
+                        self.ws.send("<EOF>")
+                        self.send = False
+                        rawCapture.truncate(0)
+                except:
+                    print("error while creating and sending images")
+                finally:
+                    running = False
 
     def on_open(self):
         print("Connected to AI server")
@@ -61,7 +62,13 @@ class SocketAI:
         Thread(target=self.image_sender).start()
 
     def handle_message(self, message):
+        if message["type"] == "request":
+            self.handle_request(message);
         print(message)
+
+    def handle_request(self, message):
+        if message["type"]["message"]["type"] == "image":
+            self.send = True;
 
     def start(self):
         while True:
