@@ -26,7 +26,7 @@ class Socket:
             time.sleep(3)
 
     def on_open(self):
-        print("Connected to server.")
+        print("Connected to the main server.")
         Thread(target=self.sendPendingMessages, daemon=True).start()
 
 
@@ -36,7 +36,7 @@ class Socket:
             time.sleep(1)
 
     def __init__(self, controller):
-        print("Trying to start the websocket to the server")
+        print("Trying to connect to the main server")
         self.controller = controller
         self.ws = websocket.WebSocketApp("wss://robot-spider-server.herokuapp.com/connect/robot",
                                          on_message=self.on_message,

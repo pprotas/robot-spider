@@ -9,7 +9,7 @@ from picamera import PiCamera
 import io
 
 
-class SocketAI:
+class AI_Socket:
     dinko = ""
     send = True
 
@@ -21,7 +21,7 @@ class SocketAI:
         self.start()
 
     def on_close(self):
-        print("Close")
+        print("No connection to AI server.")
         self.start()
 
     def image_sender(self):
@@ -49,12 +49,12 @@ class SocketAI:
                         self.send = False
                         rawCapture.truncate(0)
                 except:
-                    print("error while creating and sending images")
+                    print("Error while creating and sending images")
                 finally:
                     running = False
 
     def on_open(self):
-        print("Connected to AI server")
+        print("Connected to AI server.")
         time.sleep(3)
         self.ws.send("mode block")
         self.ws.send("<EOF>")
@@ -64,7 +64,6 @@ class SocketAI:
     def handle_message(self, message):
         if message["type"] == "request":
             self.handle_request(message);
-        print(message)
 
     def handle_request(self, message):
         if message["type"]["message"]["type"] == "image":
@@ -76,7 +75,7 @@ class SocketAI:
             time.sleep(1)
 
     def __init__(self, controller):
-        print("Trying to connect to the server")
+        print("Trying to connect to the AI server")
         self.ws = websocket.WebSocketApp("ws://141.252.29.41:5000/"
                                          , on_message=self.on_message
                                          , on_error=self.on_error
