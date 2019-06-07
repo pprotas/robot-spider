@@ -7,7 +7,7 @@ from PIL import Image
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 import io
-import numpy as np
+#import numpy as np
 
 
 class SocketAI:
