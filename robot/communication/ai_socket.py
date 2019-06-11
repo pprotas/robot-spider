@@ -63,11 +63,11 @@ class AI_Socket:
 
     def handle_message(self, message):
         if message["type"] == "request":
-            self.handle_request(message);
+            self.handle_request(message)
 
     def handle_request(self, message):
         if message["type"]["message"]["type"] == "image":
-            self.send = True;
+            self.send = True
 
     def start(self):
         while True:
@@ -76,11 +76,7 @@ class AI_Socket:
 
     def __init__(self, controller):
         print("Trying to connect to the AI server")
-        self.ws = websocket.WebSocketApp("ws://141.252.29.41:5000/"
-                                         , on_message=self.on_message
-                                         , on_error=self.on_error
-                                         , on_close=self.on_close)
+        self.ws = websocket.WebSocketApp(
+            "ws://141.252.29.41:5000/", on_message=self.on_message, on_error=self.on_error, on_close=self.on_close)
         self.ws.on_open = self.on_open
         self.controller = controller
-
-
