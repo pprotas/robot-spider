@@ -14,13 +14,17 @@
 #define vu1  A1
 #define vu2  A2
 
+#define pow0  A3
+
 #define SLAVE_ADDRESS  0x04
 #define INPUT_SIZE     14
+
+
 
 char piData[INPUT_SIZE];
 char delimiters[] = ",\n";
 int servo, data; // Variables received from rPi
-int temperature, warmestServo, sound0, sound1, sound2; // Variables to be sent to rPi
+int temperature, warmestServo, sound0, sound1, sound2, power; // Variables to be sent to rPi
 int readCounter = -1;
 
 void setup() {
@@ -77,6 +81,10 @@ void sendData() {
   }
   else if(readCounter == 3) {
     Wire.write(sound2);
+    readCounter++;
+  }
+  else if(readCounter == 4) {
+    Wire.write(power);
     readCounter = -1;
   }
 }
@@ -141,7 +149,7 @@ void setDirection(int servo) {
 
 void moveServo(int servo, int data) {
   if(servo < 90 || servo == 254){
-    Dynamixel.moveSpeed(servo, data, 1023);
+    Dynamixel.moveSpeed(servo, data, 50);
   }
   else if(servo == 91 || servo == 93 || servo == 95) {
     analogWrite(enA, data); // Send PWM signal to motor A
@@ -163,6 +171,7 @@ void checkStatus() {
   sound1 = map(sound1, 0, 1023, 0, 99);
   sound2 = analogRead(vu2);
   sound2 = map(sound2, 0, 1023, 0, 99);
+  power = analogRead(pow0);
   currentServo = 1;
   readTemp = Dynamixel.readTemperature(1);
   int temptemp = readTemp;

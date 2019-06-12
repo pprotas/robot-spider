@@ -15,53 +15,68 @@ class Movement:
     def move_servo(self, data):
         self.comm.write_byte_block(f"{data}\n")
         
-    def grab_object(self, distance):
+    def grab_object(self, distance, height):
         # instructies om een object op te pakken gegeven de afstand van dit object tot het arm
         print("Grabbing object")
-        a = 11
-        b = 5.3
-        c = 4
+        # a, b en c zijn lengtes van de grijparm
+        a = 15
+        b = 10
+        c = 12.5
         a2 = a*a
         b2 = b*b
-        distance2 = distance*distance
-        y = 2
+        # x is de horizontale afstand tot het object
+        x = distance
+        # y is de hoogte van het object ten opzichte van het laagste punt van de arm
+        y = height
         y2 = y*y
-        x = math.sqrt(distance2 - y2)
+        # xp is de horizontale lengte naar het begin van de grijper
         xp = x - c
         xp2 = xp*xp
+        # d is de afstand van het laagste punt van de grijparm tot het begin van de grijper
         d = math.sqrt(xp2 + y2)
         d2 = d*d
         
-        minVal = math.sqrt(math.pow(math.sqrt(a2 + b2 - y2) + c, 2) + y2)
-        #maxVal = a + b + c
-        maxVal = math.sqrt(math.pow(math.sqrt((a+b)*(a+b) - y2) + c, 2) + y2)
+        # minimale en maximale waardes voor de distance
+        minVal = math.sqrt(a2 + b2 - y2) + c
+        maxVal = math.sqrt((a+b)*(a+b) - y2) + c
         
         print("minVal:", minVal)
         print("maxVal:", maxVal)
         
+        # q1 en q2 (hoeken van servo's) worden berekend
         q2 = math.pi - math.acos((a2+b2-d2)/(2*a*b))
         q1 = math.atan(y/x) + math.acos((a2+d2-b2)/(2*a*d))
+        # q1 en q2 worden omgezet naar graden
         q1 = math.degrees(q1)
         q2 = math.degrees(q2)
         
-        q3 = q1 - q2
+        # q3 wordt berekend
+        q3 = q1 - q2 - 10
         
+        # de servo's worden bewogen op basis van de berekende gegevens
         self.move_servo(degree_to_position(1,q1))
         self.move_servo(degree_to_position(2,90-q2))
         self.move_servo(degree_to_position(3,90-q3))
         
+    def grab(self):
+        self.move_servo(degree_to_position(4,25))
+        
+    
+    def let_go(self):
+        self.move_servo(degree_to_position(4,180))
+    
     def move_to_object(self, distance):
         # instructies om de robot recht voor het object te plaatsen gegeven de afstand
         print("Moving to object")
         
     def dance(self):
-        previous = self.sound
+        previous = self.sound1
         while True:   
             if self.dancing:
-                print(self.sound)
-                if(not(previous - 5 <= self.sound <= previous + 5)):
-                    previous = self.sound
-                    self.move_servo(percentage_to_position(1,self.sound))
+                print(self.sound1)
+                if(not(previous - 5 <= self.sound1 <= previous + 5)):
+                    previous = self.sound1
+                    self.move_servo(percentage_to_position(1,self.sound1))
             time.sleep(0.1)
     
     def move(self, move, mode="tank"):
@@ -87,7 +102,7 @@ class Movement:
             valueB = translate(valueB, 205, 818, 0, 180)
             print(valueA)
             print(valueB)
-            valueC = 90 - (valueA - (90 - valueB))
+            valueC = 90 - (valueA - (90 - valueB)) + 10
             
             if(valueC >= 0 or valueC <= 180):
                 moveC = degree_to_position(3, valueC)
