@@ -6,6 +6,7 @@ from threading import Thread
 import time
 import json
 
+
 class Controller:
 
     def __init__(self):
@@ -14,13 +15,11 @@ class Controller:
         # Movement center with connection to Arduino
         self.i2c = I2C(self, 4)
         self.movement = Movement(self.i2c)
-        self.ai_socket = AI_Socket(self)
         
-    
     def start(self):
         # Connection to webserver
         Thread(target=Socket(self).start, daemon=True).start()
-        Thread(target=self.ai_socket.start, daemon=True).start()
+        Thread(target=AI_Socket(self).start, daemon=True).start()
         # Status checker
         Thread(target=self.i2c.get_status, daemon=True).start()
         self.movement.move_servo("2,150")
@@ -39,7 +38,7 @@ class Controller:
         self.movement.move_servo("3,800")
     
         input()
-        
+
     def handle_message(self, message):
         j = json.loads(message)
         type = j["type"]
@@ -60,6 +59,5 @@ class Controller:
             value = j["message"]["value"]
             print("AI_Socket")
             
-    
     def send(self, json):
         self.messages.append(json)

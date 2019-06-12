@@ -17,7 +17,7 @@ class Socket:
     def on_close_main(self):
         print("No connection to main server.")
         time.sleep(3)
-            
+
     def sendPendingMessages(self):
         while True:
             messages = self.controller.messages
@@ -28,7 +28,6 @@ class Socket:
     def on_open(self):
         print("Connected to the main server.")
         Thread(target=self.sendPendingMessages, daemon=True).start()
-
 
     def start(self):
         while True:
