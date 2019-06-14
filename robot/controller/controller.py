@@ -12,6 +12,7 @@ class Controller:
     def __init__(self):
         print("Program started")
         self.messages = []
+        self.power = 200
         # Movement center with connection to Arduino
         self.i2c = I2C(self, 4)
         self.movement = Movement(self.i2c)
@@ -22,21 +23,13 @@ class Controller:
         Thread(target=AI_Socket(self).start, daemon=True).start()
         # Status checker
         Thread(target=self.i2c.get_status, daemon=True).start()
-        self.movement.move_servo("2,150")
-        self.movement.move_servo("3,600")
-        time.sleep(5)
-        self.movement.grab_object(22, -2.5)
-        time.sleep(5)
-        self.movement.grab_object(35, -2.5)
-        time.sleep(5)
-        self.movement.grab()
-        time.sleep(2)
-        self.movement.grab_object(30, 15)
-        time.sleep(4)
-        self.movement.move_servo("1,600")
-        self.movement.move_servo("2,50")
-        self.movement.move_servo("3,800")
-    
+
+        
+##        while self.power > 170:
+##            print(self.power)
+##            time.sleep(0.1)
+##        print(self.power)
+##        raise KeyboardInterrupt
         input()
 
     def handle_message(self, message):

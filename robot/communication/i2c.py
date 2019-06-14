@@ -2,6 +2,7 @@ import smbus2
 import time
 import communication.json_gen as jg
 from threading import Thread
+import sys
 import os
 
 
@@ -30,7 +31,7 @@ class I2C:
             sound1 = self.read()
             sound2 = self.read()
             power = self.read()
-            #print(power) #lowest value 173 10V - highest value 200  11.3V
+            self.controller.power = power
             self.controller.movement.sound0 = sound0
             self.controller.movement.sound1 = sound1
             self.controller.movement.sound2 = sound2
