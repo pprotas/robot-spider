@@ -72,12 +72,14 @@ class Controller:
                     self.controltype = "manual"
                     #stop ai and socket
                 
-            if (j["message"]["controltype"] == "ai"):
+            elif (j["message"]["controltype"] == "ai"):
                 if (self.controltype is not "ai"):
                     self.controltype = "ai"
                     x = {"type": "request", "message": {"type": "image", "arg": "cloudcomputer"}}
                     self.server.messages.append(json.dump(x))
                     self.ai = j["message"]["controlstate"]
+            elif (j["message"]["controltype"] == "done"):
+                print("sluit ai af en notify server")
         
         # Handle response message
         elif(type == "Response"):
