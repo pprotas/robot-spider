@@ -70,16 +70,27 @@ class Controller:
             if (j["message"]["controltype"] == "manual"):
                 if (self.controltype is not "manual"):
                     self.controltype = "manual"
-                    #stop ai and socket
+                    self.cloudcomputer.ws.close()
+                    print("cloudcomputer disconnected")
                 
             elif (j["message"]["controltype"] == "ai"):
                 if (self.controltype is not "ai"):
                     self.controltype = "ai"
-                    x = {"type": "request", "message": {"type": "image", "arg": "cloudcomputer"}}
+                    x = {"type": "request", "message": {"type": "visionserver", "arg": "lock"}}
                     self.server.messages.append(json.dump(x))
                     self.ai = j["message"]["controlstate"]
+                else:
+                    self.ai = j["message"]["controlstate"]
+                    x = {"type": "config", "message": {"contoltype": "ai", "controlstate": self.ai} }
+                    self.cloudcomputer.messages.append(json.dump(x))
+
             elif (j["message"]["controltype"] == "done"):
-                print("sluit ai af en notify server")
+                self.ai = ""
+                self.controltype = "manuel"
+                self.server.messages.append(j)
+                self.cloudcomputer.ws.close()
+                print("ai finished: " + ("unsuccesful", "succesful")[ j["message"]["controlstate"] ])
+                print("cloudcomputer disconnected")
         
         # Handle response message
         elif(type == "Response"):
