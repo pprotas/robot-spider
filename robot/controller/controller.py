@@ -1,7 +1,7 @@
 from communication.socket import Socket
 from communication.ai_socket import AI_Socket
 from communication.i2c import I2C
-from movement.movement import Movement, degree_to_position
+from movement.movement import Movement
 from threading import Thread
 import time
 import json
@@ -23,7 +23,12 @@ class Controller:
         Thread(target=AI_Socket(self).start, daemon=True).start()
         # Status checker
         Thread(target=self.i2c.get_status, daemon=True).start()
-
+        
+        self.movement.set_speed(50)
+        self.movement.move_servo("2,400")
+        time.sleep(1)
+        self.movement.set_speed(999)
+        self.movement.move_servo("2,205")
         
 ##        while self.power > 170:
 ##            print(self.power)

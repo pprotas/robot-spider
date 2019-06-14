@@ -24,6 +24,7 @@ char piData[INPUT_SIZE];
 char delimiters[] = ",\n";
 int servo, data; // Variables received from rPi
 int temperature, warmestServo, sound0, sound1, sound2, power; // Variables to be sent to rPi
+int servoSpeed;
 int readCounter = -1;
 
 void setup()
@@ -162,9 +163,13 @@ void setDirection(int servo)
 }
 
 void moveServo(int servo, int data) {
-  if(servo < 90 || servo == 254){
-    Dynamixel.moveSpeed(servo, data, 50);
+  if (servo == 100) {
+    servoSpeed = data;
   }
+  else if(servo < 90 || servo == 254){
+    Dynamixel.moveSpeed(servo, data, servoSpeed);
+  }
+
   else if (servo == 91 || servo == 93 || servo == 95)
   {
     analogWrite(enA, data); // Send PWM signal to motor A
@@ -190,6 +195,7 @@ void checkStatus()
   sound2 = analogRead(vu2);
   sound2 = map(sound2, 0, 1023, 0, 99);
   power = analogRead(pow0);
+  
   currentServo = 1;
   readTemp = Dynamixel.readTemperature(1);
   int temptemp = readTemp;

@@ -126,6 +126,9 @@ class Movement:
         elif (mode == "spider"):
             # spin beweging
             print("Moving forward as spider")
+            
+    def set_speed(self, speed):
+        self.comm.write_byte_block(f"100,{speed}\n")
 
 
 def degree_to_position(servo, degrees):
