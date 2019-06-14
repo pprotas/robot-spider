@@ -16,9 +16,11 @@ class Movement:
     def move_servo(self, data):
         self.comm.write_byte_block(f"{data}\n")
         
-    def grab_object(self, distance, height):
+    def grab_object(self, distance, height = -2.5):
         # instructies om een object op te pakken gegeven de afstand van dit object tot het arm
         print("Grabbing object")
+        
+        
         # a, b en c zijn lengtes van de grijparm
         a = 15
         b = 10
@@ -56,13 +58,22 @@ class Movement:
         q3 = q1 - q2 - 10
         
         # de servo's worden bewogen op basis van de berekende gegevens
+        self.movement.move_servo(degree_to_position(1, 45))
+        self.movement.move_servo(degree_to_position(2, 45))
+        self.movement.move_servo("3,600")
+        time.sleep(5)
         self.move_servo(degree_to_position(1,q1))
         self.move_servo(degree_to_position(2,90-q2))
         self.move_servo(degree_to_position(3,90-q3))
+        time.sleep(5)
+        self.movement.grab()
+        time.sleep(2)
+        self.movement.move_servo("1,600")
+        self.movement.move_servo("2,50")
+        self.movement.move_servo("3,800")
         
     def grab(self):
         self.move_servo(degree_to_position(4,25))
-        
     
     def let_go(self):
         self.move_servo(degree_to_position(4,180))

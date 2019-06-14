@@ -22,13 +22,8 @@
 
 char piData[INPUT_SIZE];
 char delimiters[] = ",\n";
-<<<<<<< HEAD
 int servo, data; // Variables received from rPi
 int temperature, warmestServo, sound0, sound1, sound2, power; // Variables to be sent to rPi
-=======
-int servo, data;                                       // Variables received from rPi
-int temperature, warmestServo, sound0, sound1, sound2; // Variables to be sent to rPi
->>>>>>> 43632da16aad30678ac6a8e27393e339b51a2390
 int readCounter = -1;
 
 void setup()
@@ -166,7 +161,6 @@ void setDirection(int servo)
   }
 }
 
-<<<<<<< HEAD
 void moveServo(int servo, int data) {
   if(servo < 90 || servo == 254){
     Dynamixel.moveSpeed(servo, data, 50);
