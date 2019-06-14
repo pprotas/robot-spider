@@ -5,7 +5,7 @@ from threading import Thread
 import time
 
 
-class Socket:
+class Server_Socket:
     def on_message(self, message):
         print("Message received")
         print(message)
@@ -14,7 +14,7 @@ class Socket:
     def on_error(self):
         print("Error")
 
-    def on_close_main(self):
+    def on_close(self):
         print("No connection to main server.")
         time.sleep(3)
 
@@ -40,5 +40,5 @@ class Socket:
         self.ws = websocket.WebSocketApp("wss://robot-spider-server.herokuapp.com/connect/robot",
                                          on_message=self.on_message,
                                          on_error=self.on_error,
-                                         on_close=self.on_close_main,
+                                         on_close=self.on_close,
                                          on_open=self.on_open)

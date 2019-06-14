@@ -53,30 +53,42 @@ class AI_Socket:
                 finally:
                     running = False
 
+    def sendPendingMessages(self):
+        while True:
+            messages = self.messages #could use check
+            if (len(messages)):
+                self.ws.send(messages.pop() + "<EOF>")
+            time.sleep(3)
+
     def on_open(self):
-        print("Connected to AI server.")
-        time.sleep(3)
-        self.ws.send("mode block")
-        self.ws.send("<EOF>")
-        time.sleep(3)
-        Thread(target=self.image_sender).start()
+        print("Connected to Cloudcomputer.")
+        Thread(target=self.sendPendingMessages, daemon=True).start()
+        # time.sleep(3)
+        # self.ws.send("mode block")
+        # self.ws.send("<EOF>")
+        # time.sleep(3)
+        # Thread(target=self.image_sender).start() 
 
-    def handle_message(self, message):
-        if message["type"] == "request":
-            self.handle_request(message)
+    # def handle_message(self, message):
+    #     if message["type"] == "request":
+    #         self.handle_request(message)
 
-    def handle_request(self, message):
-        if message["type"]["message"]["type"] == "image":
-            self.send = True
+    # def handle_request(self, message):
+    #     if message["type"]["message"]["type"] == "image":
+    #         self.send = True
 
     def start(self):
         while True:
             self.ws.run_forever()
             time.sleep(1)
 
-    def __init__(self, controller):
-        print("Trying to connect to the AI server")
-        self.ws = websocket.WebSocketApp(
-            "ws://141.252.29.41:5000/", on_message=self.on_message, on_error=self.on_error, on_close=self.on_close)
-        self.ws.on_open = self.on_open
+    def __init__(self, controller, cloudcomputer):
+        print("Trying to connect to the Cloudcomputer")
+        self.ws = websocket.WebSocketApp("ws://" + cloudcomputer + ":5000/", 
+                                        on_message=self.on_message, 
+                                        on_error=self.on_error, 
+                                        on_close=self.on_close,
+                                        on_open=self.on_open)      
         self.controller = controller
+        self.messages = []
+
