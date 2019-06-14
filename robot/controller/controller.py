@@ -12,7 +12,6 @@ class Controller:
 
     def __init__(self):
         print("Program started")
-        self.messages = []
         self.power = 200
         # Movement center with connection to Arduino
         self.i2c = I2C(self, 4)
@@ -109,5 +108,5 @@ class Controller:
             value = j["message"]["value"]
             print("AI_Socket")
             
-    def send(self, json):
-        self.messages.append(json)
+    # def send(self, json):
+    #     self.messages.append(json)
