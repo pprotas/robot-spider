@@ -26,7 +26,6 @@ class Controller:
         # Connection to webserver
         self.server = Server_Socket(self)
         Thread(target=server.start, daemon=True).start()
-    #Thread(target=AI_Socket(self).start, daemon=True).start()
         # Status checker
         Thread(target=self.i2c.get_status, daemon=True).start()
         self.camera = Camera()
@@ -60,11 +59,10 @@ class Controller:
         
         # Handle information message
         if(type == "request"):
-            value = j["message"]["value"]
-            if message["type"]["message"]["type"] == "image":
-                if (message["type"]["message"]["arg"] == "cloudcomputer"):
+            if j["message"]["type"] == "image":
+                if (j["message"]["arg"] == "cloudcomputer"):
                     self.camera.requests.append(self.cloudcomputer)
-                elif (message["type"]["message"]["arg"] == "server"):
+                elif (j["message"]["arg"] == "server"):
                     self.camera.requests.append(self.server)
         
         # Handle config message
@@ -89,7 +87,8 @@ class Controller:
                     if(self.controltype == "ai" and self.cloudcomputer == None):
                         self.cloudcomputer = AI_Socket(self, ip)
                         self.cloudcomputer.start()
-                        self.cloudcomputer.messages.append("mode "+ self.ai)
+                        x = {"type": "config", "message": {"contoltype": "ai", "controlstate": self.ai}}
+                        self.cloudcomputer.messages.append(json.dump(x))
                 
         # Choose appropriate movement command
         elif(type == "move_motor"):
@@ -107,6 +106,3 @@ class Controller:
         elif(type == "toggle_ai"):
             value = j["message"]["value"]
             print("AI_Socket")
-            
-    # def send(self, json):
-    #     self.messages.append(json)

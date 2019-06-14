@@ -7,6 +7,7 @@ from PIL import Image
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 import io
+import json
 
 class Camera: 
     def __init__(self):
@@ -34,7 +35,8 @@ class Camera:
                         base64image = base64.b64encode(imgByteArr.getvalue())
 
                         source = request_sourses.pop()
-                        source.messages.append("img " + base64image)
+                        x = {"type": "response", "message": {"type": "image", "arg": base64image }}
+                        source.messages.append(json.dump(x))
 
                     rawCapture.truncate(0)
                     #time.sleep(3)
