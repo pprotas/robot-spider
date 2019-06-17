@@ -71,7 +71,7 @@ class Controller:
 
             elif (j["message"]["controltype"] == "done"):
                 self.ai = ""
-                self.controltype = "manuel"
+                self.controltype = "manual"
                 self.server.messages.append(j)
                 self.cloudcomputer.ws.close()
                 print("ai finished: " + ("unsuccesful", "succesful")[ j["message"]["controlstate"] ])
