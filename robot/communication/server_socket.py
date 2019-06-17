@@ -20,9 +20,9 @@ class Server_Socket:
 
     def sendPendingMessages(self):
         while True:
-            messages = self.controller.messages
-            if (len(messages)):
-                self.ws.send(messages.pop())
+            #messages = self.controller.messages
+            if (len(self.messages)):
+                self.ws.send(self.messages.pop())
             time.sleep(3)
 
     def on_open(self):
@@ -42,3 +42,4 @@ class Server_Socket:
                                          on_error=self.on_error,
                                          on_close=self.on_close,
                                          on_open=self.on_open)
+        self.messages = []

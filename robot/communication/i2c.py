@@ -41,5 +41,5 @@ class I2C:
     def send_status(self):
         while True:
             if(self.json):
-                self.controller.send(self.json)
+                self.controller.server.messages.appand(self.json)
                 time.sleep(10)

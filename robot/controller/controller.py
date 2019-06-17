@@ -18,14 +18,14 @@ class Controller:
         self.movement = Movement(self.i2c)
         self.controltype = None
         self.cloudcomputer = None
-        self.server
-        self.camera
-        self.ai
+        self.server = None
+        self.camera = None
+        self.ai = None
         
     def start(self):
         # Connection to webserver
         self.server = Server_Socket(self)
-        Thread(target=server.start, daemon=True).start()
+        Thread(target=self.server.start, daemon=True).start()
         # Status checker
         Thread(target=self.i2c.get_status, daemon=True).start()
         self.camera = Camera()
@@ -41,7 +41,7 @@ class Controller:
     def handle_message(self, message):
         j = json.loads(message)
         type = j["type"]
-        
+        print(message)
         # Handle information message
         if(type == "request"):
             if j["message"]["type"] == "image":
@@ -62,7 +62,7 @@ class Controller:
                 if (self.controltype is not "ai"):
                     self.controltype = "ai"
                     x = {"type": "request", "message": {"type": "visionserver", "arg": "lock"}}
-                    self.server.messages.append(json.dump(x))
+                    self.server.messages.append(json.dumps(x))
                     self.ai = j["message"]["controlstate"]
                 else:
                     self.ai = j["message"]["controlstate"]
@@ -71,14 +71,14 @@ class Controller:
 
             elif (j["message"]["controltype"] == "done"):
                 self.ai = ""
-                self.controltype = "manuel"
+                self.controltype = "manual"
                 self.server.messages.append(j)
                 self.cloudcomputer.ws.close()
                 print("ai finished: " + ("unsuccesful", "succesful")[ j["message"]["controlstate"] ])
                 print("cloudcomputer disconnected")
         
         # Handle response message
-        elif(type == "Response"):
+        elif(type == "response"):
             if (j["message"]["type"] == "visionserver"):
                 ip = j["message"]["ip"]
                 if (ip is not ""):
