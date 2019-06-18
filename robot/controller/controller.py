@@ -28,8 +28,8 @@ class Controller:
         Thread(target=self.server.start, daemon=True).start()
         # Status checker
         Thread(target=self.i2c.get_status, daemon=True).start()
-        self.camera = Camera()
-        Thread(target=self.camera.start()).start() 
+        self.camera = Camera(self)
+        Thread(target=self.camera.start).start() 
         
 ##        while self.power > 170:
 ##            print(self.power)
@@ -45,17 +45,20 @@ class Controller:
         # Handle information message
         if(type == "request"):
             if j["message"]["type"] == "image":
-                if (j["message"]["arg"] == "cloudcomputer"):
+                if (j["message"]["arg"][0] == "cloudcomputer"):
                     self.camera.requests.append(self.cloudcomputer)
-                elif (j["message"]["arg"] == "server"):
-                    self.camera.requests.append(self.server)
+                elif (j["message"]["arg"][0] == "server"):
+                    if (j["message"]["arg"][1] == "true"):
+                        self.camera.serverRequest = True
+                    elif (j["message"]["arg"][1] == "false"):
+                        self.camera.serverRequest = False
         
         # Handle config message
         elif(type == "config"):
             if (j["message"]["controltype"] == "manual"):
                 if (self.controltype is not "manual"):
                     self.controltype = "manual"
-                    self.cloudcomputer.ws.close()
+                    #self.cloudcomputer.ws.close()
                     print("cloudcomputer disconnected")
                 
             elif (j["message"]["controltype"] == "ai"):
@@ -67,7 +70,7 @@ class Controller:
                 else:
                     self.ai = j["message"]["controlstate"]
                     x = {"type": "config", "message": {"contoltype": "ai", "controlstate": self.ai} }
-                    self.cloudcomputer.messages.append(json.dump(x))
+                    self.cloudcomputer.messages.append(json.dumps(x))
 
             elif (j["message"]["controltype"] == "done"):
                 self.ai = ""
@@ -86,7 +89,7 @@ class Controller:
                         self.cloudcomputer = AI_Socket(self, ip)
                         self.cloudcomputer.start()
                         x = {"type": "config", "message": {"contoltype": "ai", "controlstate": self.ai}}
-                        self.cloudcomputer.messages.append(json.dump(x))
+                        self.cloudcomputer.messages.append(json.dumps(x))
                 
         # Choose appropriate movement command
         elif(type == "move_motor"):
@@ -101,6 +104,9 @@ class Controller:
         elif(type == "grab_object"):
             distance = j["message"]["distance"]
             self.movement.grab_object(distance)
+        elif(type == "drop_object"):
+            distance = j["message"]["distance"]
+            self.movement.grab_object(distance, -2)
         elif(type == "toggle_ai"):
             value = j["message"]["value"]
             print("AI_Socket")
