@@ -265,8 +265,10 @@ class SingleDance:
 
     def start(self):
         print("Singledance start")
+        self.move_forward(4)
         self.pirouette_left()
         self.pirouette_right()
+        self.move_backward(4)
 
     def pirouette_right(self):
         self.all_leggs_up()
@@ -324,7 +326,12 @@ class SingleDance:
         self.comm.write_byte_block(f"{data}\n")
 
     def move_forward(self, time_forward):
+        self.move_servo("91,200")
         self.move_servo("92,200")
+        time.sleep(time_forward)
+
+    def move_backward(self, time_forward):
         self.move_servo("93,200")
+        self.move_servo("94,200")
         time.sleep(time_forward)
 
