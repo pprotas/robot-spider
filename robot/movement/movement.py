@@ -265,23 +265,21 @@ class SingleDance:
 
     def start(self):
         print("Singledance start")
-        self.move_forward(4)
+        # self.move_forward(4)
         self.pirouette_left()
         self.pirouette_right()
-        self.move_backward(4)
+        # self.move_backward(4)
 
     def pirouette_right(self):
         self.all_leggs_up()
-        self.move_servo("91,200")
-        self.move_servo("94,200")
-        time.sleep(4)
+        self.right_leggs_down()
+        self.move_right()
         self.stop()
 
     def pirouette_left(self):
+        self.all_leggs_up()
         self.left_leggs_down()
-        self.move_servo("92,200")
-        self.move_servo("93,200")
-        time.sleep(4)
+        self.move_left()
         self.stop()
 
     def all_leggs_up(self):
@@ -304,12 +302,51 @@ class SingleDance:
         self.move_servo(degree_to_position(30, 0))
         self.move_servo(degree_to_position(40, 0))
 
-        self.move_servo(degree_to_position(31, 90))
+        self.move_servo(degree_to_position(31, 0))
         self.move_servo(degree_to_position(41, 90))
 
-        self.move_servo(degree_to_position(32, 140))
-        self.move_servo(degree_to_position(42, 140))
-        
+        self.move_servo(degree_to_position(32, 130))
+        self.move_servo(degree_to_position(42, 130))
+
+    def right_leggs_down(self):
+        self.move_servo(degree_to_position(10, 0))
+        self.move_servo(degree_to_position(20, 0))
+
+        self.move_servo(degree_to_position(11, 0))
+        self.move_servo(degree_to_position(21, 90))
+
+        self.move_servo(degree_to_position(12, 130))
+        self.move_servo(degree_to_position(22, 130))
+
+    def stop(self):
+        self.move_servo("95,0")
+        self.move_servo("96,0")   
+
+    def move_forward(self, time_forward):
+        self.move_servo("91,200")
+        self.move_servo("92,200")
+        time.sleep(time_forward)
+        self.stop()    
+
+    def move_backward(self, time_backward):
+        self.move_servo("93,200")
+        self.move_servo("94,200")
+        time.sleep(time_backward)
+        self.stop()    
+
+    def move_left(self, time_left):
+        self.move_servo("92,200")
+        self.move_servo("93,200")
+        time.sleep(time_left)
+        self.stop()
+
+    def move_right(self, time_right):
+        self.move_servo("91,200")
+        self.move_servo("94,200")
+        time.sleep(time_right)
+        self.stop()      
+    
+    #Helper functions    
     def degree_to_position(servo, degrees):
         pos = translate(degrees, 0, 180, 205, 818)
         return f"{servo},{pos}"
@@ -318,20 +355,5 @@ class SingleDance:
         pos = translate(percentage, 0, 100, 205, 818)
         return f"{servo},{pos}"
 
-    def stop(self):
-        self.move_servo("95,0")
-        self.move_servo("96,0")        
-    
     def move_servo(self, data):
         self.comm.write_byte_block(f"{data}\n")
-
-    def move_forward(self, time_forward):
-        self.move_servo("91,200")
-        self.move_servo("92,200")
-        time.sleep(time_forward)
-
-    def move_backward(self, time_forward):
-        self.move_servo("93,200")
-        self.move_servo("94,200")
-        time.sleep(time_forward)
-
