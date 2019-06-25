@@ -42,9 +42,10 @@ class Camera:
                             self.controller.cloudcomputer.messages.append(json.dumps(x))
                             
                         elif (self.serverRequest and self.controller.cloudcomputer == None):
-                            print("stuur image")
-                            self.controller.server.messages.append(json.dumps(x))
-                            time.sleep(self.delay)
+                            if (len(self.controller.server.messages) < 3):
+                                print("stuur image")
+                                self.controller.server.messages.append(json.dumps(x))
+                                time.sleep(self.delay)
 
                 rawCapture.truncate(0)
                 #time.sleep(self.delay)

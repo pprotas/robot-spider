@@ -61,13 +61,8 @@ class Controller:
             if (j["message"]["controltype"] == "manual"):
                 if (self.controltype != "manual"):
                     self.controltype = "manual"
-                    #send ai done
                     x = {"type": "config", "message": {"controltype": "done", "controlstate": False}}
                     self.cloudcomputer.messages.append(json.dumps(x))
-                    #wait till send and than close socket
-                    time.sleep(0.4) #quick fix
-                    self.cloudcomputer.ws.close()
-                    print("cloudcomputer disconnected")
                     
                 #check if controlstate is a dance
                 if (j["message"]["controlstate"] == 'singledance'):
@@ -84,34 +79,46 @@ class Controller:
                     self.ai = j["message"]["controlstate"]
                     x = {"type": "config", "message": {"controltype": "ai", "controlstate": self.ai} }
                     self.cloudcomputer.messages.append(json.dumps(x))
-                    
-            elif (j["message"]["controltype"] == "capture"):
-                if(self.cloudcomputer != None):
-                    print("send camera config to cloudcomputer")
-                    elf.cloudcomputer.messages.append(json.dumps(j))
 
             elif (j["message"]["controltype"] == "done"):
                 self.ai = ""
                 self.controltype = "manual"
-                self.server.messages.append(j)
+                #turn off current robot actions
+                handle_message()
+                self.cloudcomputer.messages = []
                 self.cloudcomputer.messages.append(j)
-                #wait till send and than close socket
-                time.sleep(0.4) #quick fix
-                self.cloudcomputer.ws.close()
-                self.cloudcomputer = None
-                print("ai finished: " + ("unsuccesful", "succesful")[ j["message"]["controlstate"] ])
-                print("cloudcomputer disconnected")
+
+            elif (j["message"]["controltype"] == "close"):
+                if(self.cloudcomputer != None):
+                    self.cloudcomputer.ws.close()
+                    self.cloudcomputer = None
+                    self.ai = None
+                    print("cloudcomputer disconnected")
+                    x =  x = {"type": "config", "message": {"controltype": "done", "controlstate": j["message"]["controlstate"]} }
+                    self.server.messages.append(j)
+    
+            #in theory not used:     
+            elif (j["message"]["controltype"] == "capture"):
+                if(self.cloudcomputer != None):
+                    print("send camera config to cloudcomputer")
+                    self.cloudcomputer.messages.append(json.dumps(j))
+            #------------------
         
         # Handle response message
         elif(type == "response"):
             if (j["message"]["type"] == "visionserver"):
                 ip = j["message"]["ip"]
-                if (ip is not ""):
+                if (ip != ""):
                     if(self.controltype == "ai" and self.cloudcomputer == None):
                         self.cloudcomputer = AI_Socket(self, ip)
                         Thread(target=self.cloudcomputer.start, daemon=True).start()
                         x = {"type": "config", "message": {"controltype": "ai", "controlstate": self.ai}}
                         self.cloudcomputer.messages.append(json.dumps(x))
+                else:
+                    self.controltype = ""
+                    self.ai = ""
+                    x = {"type": "config", "message": {"controltype": "done", "controlstate": False }}
+                    self.server.append(json.dumps(x))
                 
         # Choose appropriate movement command
         elif(type == "move_motor"):
@@ -137,4 +144,5 @@ class Controller:
             self.movement.tilt_front()
         elif(type == "tilt_back"):
             self.movement.tilt_back()
+
 
