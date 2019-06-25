@@ -272,12 +272,14 @@ class SingleDance:
 
     def pirouette_right(self):
         self.all_leggs_up()
+        time.sleep(0.5)
         self.right_leggs_down()
         self.move_right()
         self.stop()
 
     def pirouette_left(self):
         self.all_leggs_up()
+        time.sleep(0.5)
         self.left_leggs_down()
         self.move_left()
         self.stop()
