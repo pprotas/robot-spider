@@ -301,10 +301,10 @@ class SingleDance:
         self.move_servo(degree_to_position(42, 30))
 
     def left_leggs_down(self):
-        self.move_servo(degree_to_position(30, 0))
+        self.move_servo(degree_to_position(30, 180))
         self.move_servo(degree_to_position(40, 0))
 
-        self.move_servo(degree_to_position(31, 0))
+        self.move_servo(degree_to_position(31, 90))
         self.move_servo(degree_to_position(41, 90))
 
         self.move_servo(degree_to_position(32, 130))
