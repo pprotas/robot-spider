@@ -17,7 +17,7 @@ class Controller:
         # Movement center with connection to Arduino
         self.i2c = I2C(self, 4)
         self.movement = Movement(self.i2c)
-        self.singledance = SingleDance()
+        self.singledance = SingleDance(self.i2c)
         self.controltype = None
         self.cloudcomputer = None
         self.server = None
@@ -72,6 +72,7 @@ class Controller:
                 #check if controlstate is a dance
                 if (j["message"]["controlstate"] == 'singledance'):
                     # start singledance
+                    print("SingleDance")
                     Thread(target=self.singledance.start(), daemon=True).start()
                 
             elif (j["message"]["controltype"] == "ai"):

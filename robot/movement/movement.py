@@ -114,10 +114,10 @@ class Movement:
             # instructies om spin vooruit te laten bewegen met rupsbanden
             motorA = move["a"]
             motorB = move["b"]
-            print(motorA)
             print(motorB)
-            self.move_servo(motorA)
+            print(motorA)
             self.move_servo(motorB)
+            self.move_servo(motorA)            
 
         elif (mode == "arm"):
             moveA = move["a"]
@@ -260,9 +260,13 @@ def translate(value, left_min, left_max, right_min, right_max):
 
 
 class SingleDance:
+    
+    def __init__(self, comm):
+        self.comm = comm        
 
     def start(self):
-        self.all_leggs_up()    
+        print("Singledance start")
+        self.pirouette_left()    
 
     def pirouette_right(self):
         self.all_leggs_up()
@@ -270,9 +274,9 @@ class SingleDance:
         Movement.move_servo("94,200")
 
     def pirouette_left(self):
-        self.all_leggs_up()
-        Movement.move_servo("92,200")
-        Movement.move_servo("93,200")
+        #self.all_leggs_up()
+        self.move_servo("92,200")
+        self.move_servo("93,200")
 
     def all_leggs_up(self):
         Movement.move_servo(degree_to_position(10, 90))
@@ -292,3 +296,14 @@ class SingleDance:
 
     def left_leggs_down(self):
         Movement.move_servo(degree_to_position(30, 90))
+        
+    def degree_to_position(servo, degrees):
+        pos = translate(degrees, 0, 180, 205, 818)
+        return f"{servo},{pos}"
+
+    def percentage_to_position(servo, percentage):
+        pos = translate(percentage, 0, 100, 205, 818)
+        return f"{servo},{pos}"
+    
+    def move_servo(self, data):
+        self.comm.write_byte_block(f"{data}\n")
