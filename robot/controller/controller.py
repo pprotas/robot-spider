@@ -2,7 +2,7 @@ from communication.server_socket import Server_Socket
 from communication.ai_socket import AI_Socket
 from communication.i2c import I2C
 from movement.movement import Movement, degree_to_position
-from movement.movement import SingleDance
+from singledance.singledance import SingleDance
 from threading import Thread
 from vision.camera import Camera
 import time
