@@ -2,6 +2,7 @@ from communication.server_socket import Server_Socket
 from communication.ai_socket import AI_Socket
 from communication.i2c import I2C
 from movement.movement import Movement, degree_to_position
+from movement.movement import SingleDance
 from threading import Thread
 from vision.camera import Camera
 import time
@@ -16,6 +17,7 @@ class Controller:
         # Movement center with connection to Arduino
         self.i2c = I2C(self, 4)
         self.movement = Movement(self.i2c)
+        self.singledance = SingleDance()
         self.controltype = None
         self.cloudcomputer = None
         self.server = None
@@ -67,11 +69,10 @@ class Controller:
                     self.cloudcomputer.ws.close()
                     print("cloudcomputer disconnected")
                     
-                #check if danche, if stop
-                #if (j["message"]["controlstate"] == 'linedance'):
-                    #start linedance
-                #elif (j["message"]["controlstate"] == 'singledance'):
-                    #start singledance
+                #check if controlstate is a dance
+                if (j["message"]["controlstate"] == 'singledance'):
+                    # start singledance
+                    Thread(target=self.singledance.start(), daemon=True).start()
                 
             elif (j["message"]["controltype"] == "ai"):
                 if (self.controltype != "ai"):
