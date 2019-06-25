@@ -258,44 +258,50 @@ def translate(value, left_min, left_max, right_min, right_max):
     valueScaled = float(value - left_min) / float(leftSpan)
     return int(right_min + (valueScaled * rightSpan))
 
-
 class SingleDance:
     
     def __init__(self, comm):
-        self.comm = comm        
+        self.comm = comm
 
     def start(self):
         print("Singledance start")
-        self.pirouette_left()    
+        self.pirouette_left()
+        self.left_leggs_down()
+        self.pirouette_right()
 
     def pirouette_right(self):
         self.all_leggs_up()
-        Movement.move_servo("91,200")
-        Movement.move_servo("94,200")
+        self.move_servo("91,200")
+        self.move_servo("94,200")
+        time.sleep(4)
+        self.stop()
 
     def pirouette_left(self):
-        #self.all_leggs_up()
+        self.all_leggs_up()
         self.move_servo("92,200")
         self.move_servo("93,200")
+        time.sleep(4)
+        self.stop()
 
     def all_leggs_up(self):
-        Movement.move_servo(degree_to_position(10, 90))
-        Movement.move_servo(degree_to_position(20, 90))
-        Movement.move_servo(degree_to_position(30, 90))
-        Movement.move_servo(degree_to_position(40, 90))
+        self.move_servo(degree_to_position(10, 90))
+        self.move_servo(degree_to_position(20, 90))
+        self.move_servo(degree_to_position(30, 90))
+        self.move_servo(degree_to_position(40, 90))
 
-        Movement.move_servo(degree_to_position(11, 90))
-        Movement.move_servo(degree_to_position(21, 90))
-        Movement.move_servo(degree_to_position(31, 90))
-        Movement.move_servo(degree_to_position(41, 90))
+        self.move_servo(degree_to_position(11, 90))
+        self.move_servo(degree_to_position(21, 90))
+        self.move_servo(degree_to_position(31, 90))
+        self.move_servo(degree_to_position(41, 90))
 
-        Movement.move_servo(degree_to_position(12, 90))
-        Movement.move_servo(degree_to_position(22, 90))
-        Movement.move_servo(degree_to_position(32, 90))
-        Movement.move_servo(degree_to_position(42, 90))
+        self.move_servo(degree_to_position(12, 90))
+        self.move_servo(degree_to_position(22, 90))
+        self.move_servo(degree_to_position(32, 90))
+        self.move_servo(degree_to_position(42, 90))
 
     def left_leggs_down(self):
-        Movement.move_servo(degree_to_position(30, 90))
+        self.move_servo(degree_to_position(30, 90))
+        self.move_servo(degree_to_position(40, 90))
         
     def degree_to_position(servo, degrees):
         pos = translate(degrees, 0, 180, 205, 818)
@@ -304,6 +310,10 @@ class SingleDance:
     def percentage_to_position(servo, percentage):
         pos = translate(percentage, 0, 100, 205, 818)
         return f"{servo},{pos}"
+
+    def stop(self):
+        self.move_servo("95,0")
+        self.move_servo("96,0")        
     
     def move_servo(self, data):
         self.comm.write_byte_block(f"{data}\n")
