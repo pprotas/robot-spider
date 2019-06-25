@@ -293,14 +293,20 @@ class SingleDance:
         self.move_servo(degree_to_position(31, 0))
         self.move_servo(degree_to_position(41, 0))
 
-        self.move_servo(degree_to_position(12, 150))
-        self.move_servo(degree_to_position(22, 150))
-        self.move_servo(degree_to_position(32, 150))
-        self.move_servo(degree_to_position(42, 150))
+        self.move_servo(degree_to_position(12, 30))
+        self.move_servo(degree_to_position(22, 30))
+        self.move_servo(degree_to_position(32, 30))
+        self.move_servo(degree_to_position(42, 30))
 
     def left_leggs_down(self):
-        self.move_servo(degree_to_position(30, 90))
-        self.move_servo(degree_to_position(40, 90))
+        self.move_servo(degree_to_position(30, 0))
+        self.move_servo(degree_to_position(40, 0))
+
+        self.move_servo(degree_to_position(31, 90))
+        self.move_servo(degree_to_position(41, 90))
+
+        self.move_servo(degree_to_position(32, 140))
+        self.move_servo(degree_to_position(42, 140))
         
     def degree_to_position(servo, degrees):
         pos = translate(degrees, 0, 180, 205, 818)
@@ -316,3 +322,9 @@ class SingleDance:
     
     def move_servo(self, data):
         self.comm.write_byte_block(f"{data}\n")
+
+    def move_forward(self, time_forward):
+        self.move_servo("92,200")
+        self.move_servo("93,200")
+        time.sleep(time_forward)
+
