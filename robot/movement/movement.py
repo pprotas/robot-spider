@@ -272,16 +272,12 @@ class SingleDance:
 
     def pirouette_right(self):
         self.all_leggs_up()
-        # time.sleep(0.5)
-        # self.right_leggs_down()
-        self.move_right()
+        self.move_right(3)
         self.stop()
 
     def pirouette_left(self):
-        # self.all_leggs_up()
-        # time.sleep(0.5)
         self.left_leggs_down()
-        self.move_left()
+        self.move_left(3)
         self.stop()
 
     def all_leggs_up(self):
@@ -317,8 +313,8 @@ class SingleDance:
         self.move_servo(degree_to_position(11, 0))
         self.move_servo(degree_to_position(21, 90))
 
-        self.move_servo(degree_to_position(12, 130))
-        self.move_servo(degree_to_position(22, 130))
+        self.move_servo(degree_to_position(12, 100))
+        self.move_servo(degree_to_position(22, 100))
 
     def stop(self):
         self.move_servo("95,0")
