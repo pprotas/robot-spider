@@ -1,7 +1,7 @@
 from communication.server_socket import Server_Socket
 from communication.ai_socket import AI_Socket
 from communication.i2c import I2C
-from movement.movement import Movement
+from movement.movement import Movement, degree_to_position
 from threading import Thread
 from vision.camera import Camera
 import time
@@ -30,53 +30,74 @@ class Controller:
         Thread(target=self.i2c.get_status, daemon=True).start()
         self.camera = Camera(self)
         Thread(target=self.camera.start).start() 
+        self.movement.set_speed(100)
+        self.movement.fold_legs()
         
+
 ##        while self.power > 170:
 ##            print(self.power)
 ##            time.sleep(0.1)
-##        print(self.power)
-##        raise KeyboardInterrupt
+
         input()
 
     def handle_message(self, message):
         j = json.loads(message)
         type = j["type"]
-        print(message)
+        #print(message)
+        
         # Handle information message
         if(type == "request"):
             if j["message"]["type"] == "image":
                 if (j["message"]["arg"][0] == "cloudcomputer"):
                     self.camera.requests.append(self.cloudcomputer)
                 elif (j["message"]["arg"][0] == "server"):
-                    if (j["message"]["arg"][1] == "true"):
-                        self.camera.serverRequest = True
-                    elif (j["message"]["arg"][1] == "false"):
-                        self.camera.serverRequest = False
+                    print("camera:")
+                    self.camera.stream(j["message"]["arg"][1], 0.05)
         
         # Handle config message
         elif(type == "config"):
             if (j["message"]["controltype"] == "manual"):
-                if (self.controltype is not "manual"):
+                if (self.controltype != "manual"):
                     self.controltype = "manual"
-                    #self.cloudcomputer.ws.close()
+                    #send ai done
+                    x = {"type": "config", "message": {"controltype": "done", "controlstate": False}}
+                    self.cloudcomputer.messages.append(json.dumps(x))
+                    #wait till send and than close socket
+                    time.sleep(0.4) #quick fix
+                    self.cloudcomputer.ws.close()
                     print("cloudcomputer disconnected")
+                    
+                #check if danche, if stop
+                #if (j["message"]["controlstate"] == 'linedance'):
+                    #start linedance
+                #elif (j["message"]["controlstate"] == 'singledance'):
+                    #start singledance
                 
             elif (j["message"]["controltype"] == "ai"):
-                if (self.controltype is not "ai"):
+                if (self.controltype != "ai"):
                     self.controltype = "ai"
                     x = {"type": "request", "message": {"type": "visionserver", "arg": "lock"}}
                     self.server.messages.append(json.dumps(x))
                     self.ai = j["message"]["controlstate"]
                 else:
                     self.ai = j["message"]["controlstate"]
-                    x = {"type": "config", "message": {"contoltype": "ai", "controlstate": self.ai} }
+                    x = {"type": "config", "message": {"controltype": "ai", "controlstate": self.ai} }
                     self.cloudcomputer.messages.append(json.dumps(x))
+                    
+            elif (j["message"]["controltype"] == "capture"):
+                if(self.cloudcomputer != None):
+                    print("send camera config to cloudcomputer")
+                    elf.cloudcomputer.messages.append(json.dumps(j))
 
             elif (j["message"]["controltype"] == "done"):
                 self.ai = ""
                 self.controltype = "manual"
                 self.server.messages.append(j)
+                self.cloudcomputer.messages.append(j)
+                #wait till send and than close socket
+                time.sleep(0.4) #quick fix
                 self.cloudcomputer.ws.close()
+                self.cloudcomputer = None
                 print("ai finished: " + ("unsuccesful", "succesful")[ j["message"]["controlstate"] ])
                 print("cloudcomputer disconnected")
         
@@ -87,12 +108,13 @@ class Controller:
                 if (ip is not ""):
                     if(self.controltype == "ai" and self.cloudcomputer == None):
                         self.cloudcomputer = AI_Socket(self, ip)
-                        self.cloudcomputer.start()
-                        x = {"type": "config", "message": {"contoltype": "ai", "controlstate": self.ai}}
+                        Thread(target=self.cloudcomputer.start, daemon=True).start()
+                        x = {"type": "config", "message": {"controltype": "ai", "controlstate": self.ai}}
                         self.cloudcomputer.messages.append(json.dumps(x))
                 
         # Choose appropriate movement command
         elif(type == "move_motor"):
+            print("Moving motor")
             move = j["message"]["move"]
             self.movement.move(move)
         elif(type == "move_arm"):
@@ -103,10 +125,14 @@ class Controller:
             self.movement.dancing = value
         elif(type == "grab_object"):
             distance = j["message"]["distance"]
-            self.movement.grab_object(distance)
+            self.movement.grab_object(34, -6)
         elif(type == "drop_object"):
             distance = j["message"]["distance"]
-            self.movement.grab_object(distance, -2)
-        elif(type == "toggle_ai"):
-            value = j["message"]["value"]
-            print("AI_Socket")
+            self.movement.drop_object()
+        elif(type == "fold_legs"):
+            self.movement.fold_legs()
+        elif(type == "tilt_front"):
+            self.movement.tilt_front()
+        elif(type == "tilt_back()"):
+            self.movement.tilt_back()
+

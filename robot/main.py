@@ -21,7 +21,13 @@ if __name__ == '__main__':
     except (KeyboardInterrupt, SystemExit):  # Close the program on CTRL+C
         print("\nShutting down")
         controller.movement.move_servo("99,0")
-        controller.movement.move_servo("254,500")
+        controller.movement.fold_legs()
+        controller.movement.move_servo("1,500")
+        time.sleep(3)
+        controller.movement.move_servo("1,200")
+        controller.movement.move_servo("2,1000")
+        time.sleep(3)
+        controller.movement.move_servo("3,150")
         try:
             sys.exit(0)
         except SystemExit:

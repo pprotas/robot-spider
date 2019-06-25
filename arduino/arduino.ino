@@ -24,7 +24,7 @@ char piData[INPUT_SIZE];
 char delimiters[] = ",\n";
 int servo, data; // Variables received from rPi
 int temperature, warmestServo, sound0, sound1, sound2, power; // Variables to be sent to rPi
-int servoSpeed;
+int servoSpeed = 100;
 int readCounter = -1;
 
 void setup()

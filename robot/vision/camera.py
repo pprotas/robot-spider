@@ -13,6 +13,7 @@ class Camera:
     def __init__(self, controller):
         self.controller = controller
         self.serverRequest = False
+        self.delay = 0
         self.requests = []
 
     def image_sender(self):
@@ -28,31 +29,44 @@ class Camera:
                     rawCapture.truncate()
                     rawCapture.seek(0)
 
-                    #request_sourses = self.requests
-                    #print("Send")
-                    if (self.serverRequest):
-                        print("if")
+                    if (len(self.requests) or (self.serverRequest and self.controller.cloudcomputer == None)):
                         img = Image.fromarray(frame.array)
-                        print("img")
                         imgByteArr = io.BytesIO()
-                        print("imgArray")
                         img.save(imgByteArr, format='JPEG')
-                        print("base")
                         base64image = base64.b64encode(imgByteArr.getvalue())
-                        print("base64")
                         
-                        source = self.requests.pop()
                         x = {"type": "response", "message": {"type": "image"}}
                         x["message"]["arg"] = base64image.decode('utf-8')
-                        print(json.dumps(x))
-                        self.controller.server.messages.append(json.dumps(x))
+                        if (len(self.requests)):
+                            source = self.requests.pop()
+                            self.controller.cloudcomputer.messages.append(json.dumps(x))
+                            
+                        elif (self.serverRequest and self.controller.cloudcomputer == None):
+                            print("stuur image")
+                            self.controller.server.messages.append(json.dumps(x))
+                            time.sleep(self.delay)
 
-                    rawCapture.truncate(0)
-                    time.sleep(0.1)
+                rawCapture.truncate(0)
+                #time.sleep(self.delay)
             except:
                 print("Error while creating and sending images")
             finally:
                 running = False
+                
+    def stream(self, state, delay):
+        print("change camera state")
+        print(state)
+        if (state == "true"):
+            print("camera on")
+            self.serverRequest = True
+            self.delay = delay
+        else:
+            camara("camera off")
+            self.serverRequest = False
+            self.delay = delay
 
     def start(self):
         self.image_sender()
+
+#start_time = time.time()
+#print("tijd: ", time.time() - start_time)

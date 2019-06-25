@@ -23,7 +23,7 @@ class Server_Socket:
             #messages = self.controller.messages
             if (len(self.messages)):
                 self.ws.send(self.messages.pop())
-            time.sleep(3)
+            #time.sleep(0.01)
 
     def on_open(self):
         print("Connected to the main server.")
