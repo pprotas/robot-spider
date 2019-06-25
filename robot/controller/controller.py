@@ -127,6 +127,7 @@ class Controller:
         elif(type == "grab_object"):
             distance = j["message"]["distance"]
             self.movement.grab_object(34, -6)
+            self.movement.support()
         elif(type == "drop_object"):
             distance = j["message"]["distance"]
             self.movement.drop_object()
@@ -134,6 +135,6 @@ class Controller:
             self.movement.fold_legs()
         elif(type == "tilt_front"):
             self.movement.tilt_front()
-        elif(type == "tilt_back()"):
+        elif(type == "tilt_back"):
             self.movement.tilt_back()
 
