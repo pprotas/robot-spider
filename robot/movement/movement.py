@@ -265,21 +265,21 @@ class SingleDance:
 
     def start(self):
         print("Singledance start")
-        # self.move_forward(4)
+        self.move_forward(4)
         self.pirouette_left()
         self.pirouette_right()
-        # self.move_backward(4)
+        self.move_backward(4)
 
     def pirouette_right(self):
         self.all_leggs_up()
-        time.sleep(0.5)
-        self.right_leggs_down()
+        # time.sleep(0.5)
+        # self.right_leggs_down()
         self.move_right()
         self.stop()
 
     def pirouette_left(self):
-        self.all_leggs_up()
-        time.sleep(0.5)
+        # self.all_leggs_up()
+        # time.sleep(0.5)
         self.left_leggs_down()
         self.move_left()
         self.stop()
