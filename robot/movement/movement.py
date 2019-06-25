@@ -297,8 +297,8 @@ class SingleDance:
         self.move_servo(degree_to_position(42, 30))
 
     def left_leggs_down(self):
-        self.move_servo(degree_to_position(30, 180))
-        self.move_servo(degree_to_position(40, 0))
+        self.move_servo(degree_to_position(30, 160))
+        self.move_servo(degree_to_position(40, 20))
 
         self.move_servo(degree_to_position(31, 90))
         self.move_servo(degree_to_position(41, 90))
@@ -315,6 +315,26 @@ class SingleDance:
 
         self.move_servo(degree_to_position(12, 100))
         self.move_servo(degree_to_position(22, 100))
+
+    def upper_leggs_forward(self):
+        self.move_servo(degree_to_position(10, 110))
+        self.move_servo(degree_to_position(40, 110))
+
+        self.move_servo(degree_to_position(11, 90))
+        self.move_servo(degree_to_position(41, 90))
+
+        self.move_servo(degree_to_position(12, 90))
+        self.move_servo(degree_to_position(42, 90))
+
+    def bottom_leggs_forward(self):
+        self.move_servo(degree_to_position(20, 110))
+        self.move_servo(degree_to_position(30, 110))
+
+        self.move_servo(degree_to_position(21, 90))
+        self.move_servo(degree_to_position(31, 90))
+
+        self.move_servo(degree_to_position(22, 90))
+        self.move_servo(degree_to_position(32, 90))
 
     def stop(self):
         self.move_servo("95,0")
