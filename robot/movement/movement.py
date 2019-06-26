@@ -265,12 +265,19 @@ class SingleDance:
 
         # Move 1
         print("Move 1: leggs left to right")
-        self.bow_all_leggs_left_to_right(6)
+        print("1: bow left to right 6 times")
+        self.bow_all_leggs_left_to_right(6, 700)
+        print("1: forward ride 200 140")
         self.move_direction_forward("200", "140")
-        self.bow_all_leggs_left_to_right(4)
+        print("1: bow left to right 4 times")
+        self.bow_all_leggs_left_to_right(4, 200)
+        print("1: stop riding")
         self.stop()
+        print("1: backward ride 200 140")
         self.move_direction_backward("200", "140")
-        self.bow_all_leggs_left_to_right(6)
+        print("1: bow left to right 6 times")        
+        self.bow_all_leggs_left_to_right(6, 200)
+        print("stop")
         self.stop()
         
         # Move 2
@@ -341,7 +348,7 @@ class SingleDance:
             self.move_servo(degree_to_position(41, 90))
             time.sleep(0.2)
         self.set_speed(100)
-    def bow_all_leggs_left_to_right(self, nr_of_times):
+    def bow_all_leggs_left_to_right(self, nr_of_times, max_servo_speed):
         self.move_servo(degree_to_position(10, 120))
         self.move_servo(degree_to_position(20, 60))
         self.move_servo(degree_to_position(30, 120))
@@ -352,19 +359,19 @@ class SingleDance:
         self.move_servo(degree_to_position(31, 0))
         self.move_servo(degree_to_position(42, 0))
 
-        self.set_speed(999)
+        self.set_speed(max_servo_speed)
         for i in range(0, nr_of_times):
             self.move_servo(degree_to_position(12, 0))
             self.move_servo(degree_to_position(22, 0))
             self.move_servo(degree_to_position(32, 180))
             self.move_servo(degree_to_position(42, 180))
-            time.sleep(0.35)
+            time.sleep(0.4)
             
             self.move_servo(degree_to_position(12, 180))
             self.move_servo(degree_to_position(22, 180))
             self.move_servo(degree_to_position(32, 0))
             self.move_servo(degree_to_position(42, 0))
-            time.sleep(0.35)
+            time.sleep(0.4)
         self.set_speed(100)
 
     # Leggs down
