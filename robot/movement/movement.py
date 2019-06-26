@@ -3,6 +3,7 @@ from threading import Thread
 import math
 import time
 
+
 class Movement:
     def __init__(self, comm):
         self.comm = comm
@@ -117,7 +118,7 @@ class Movement:
             print(motorB)
             print(motorA)
             self.move_servo(motorB)
-            self.move_servo(motorA)            
+            self.move_servo(motorA)
 
         elif (mode == "arm"):
             moveA = move["a"]
@@ -188,18 +189,18 @@ class Movement:
 
     def tilt_front(self):
         # Instructions to lift back of robot
-        self.move_servo(degree_to_position(10,50))
-        self.move_servo(degree_to_position(40,130))
+        self.move_servo(degree_to_position(10, 50))
+        self.move_servo(degree_to_position(40, 130))
         time.sleep(3)
-        self.move_servo(degree_to_position(11,40))
-        self.move_servo(degree_to_position(41,40))
-        self.move_servo(degree_to_position(12,220))
-        self.move_servo(degree_to_position(42,220))
+        self.move_servo(degree_to_position(11, 40))
+        self.move_servo(degree_to_position(41, 40))
+        self.move_servo(degree_to_position(12, 220))
+        self.move_servo(degree_to_position(42, 220))
         time.sleep(1)
-        self.move_servo(degree_to_position(11,90))
-        self.move_servo(degree_to_position(41,90))
-        self.move_servo(degree_to_position(12,180))
-        self.move_servo(degree_to_position(42,180))
+        self.move_servo(degree_to_position(11, 90))
+        self.move_servo(degree_to_position(41, 90))
+        self.move_servo(degree_to_position(12, 180))
+        self.move_servo(degree_to_position(42, 180))
 
     def support_back(self):
         self.move_servo(degree_to_position(20, 0))
@@ -227,13 +228,13 @@ class Movement:
         self.move_servo(degree_to_position(42, 180))
 
     def fold_front(self):
-        self.move_servo(degree_to_position(11,40))
-        self.move_servo(degree_to_position(41,40))
-        self.move_servo(degree_to_position(12,220))
-        self.move_servo(degree_to_position(42,220))
+        self.move_servo(degree_to_position(11, 40))
+        self.move_servo(degree_to_position(41, 40))
+        self.move_servo(degree_to_position(12, 220))
+        self.move_servo(degree_to_position(42, 220))
         time.sleep(2)
         self.fold_legs()
-        
+
     def fold_arm(self):
         self.move_servo("1,500")
         time.sleep(3)
@@ -242,13 +243,16 @@ class Movement:
         time.sleep(3)
         self.move_servo("3,150")
 
+
 def degree_to_position(servo, degrees):
     pos = translate(degrees, 0, 180, 205, 818)
     return f"{servo},{pos}"
 
+
 def percentage_to_position(servo, percentage):
     pos = translate(percentage, 0, 100, 205, 818)
     return f"{servo},{pos}"
+
 
 def translate(value, left_min, left_max, right_min, right_max):
     leftSpan = left_max - left_min
@@ -256,8 +260,9 @@ def translate(value, left_min, left_max, right_min, right_max):
     valueScaled = float(value - left_min) / float(leftSpan)
     return int(right_min + (valueScaled * rightSpan))
 
+
 class SingleDance:
-    
+
     # Contructor
     def __init__(self, comm):
         self.comm = comm
@@ -266,29 +271,22 @@ class SingleDance:
     def start(self):
         print("Singledance Start")
 
+        # Move 0
+        print("Move 0: Arm up with the hat")
         time.sleep(3)
         self.move_servo(degree_to_position(1, 90))
         self.move_servo(degree_to_position(2, 90))
-        self.move_servo(degree_to_position(3, 0)) 
-        time.sleep(2)       
+        self.move_servo(degree_to_position(3, 0))
+        time.sleep(5)
 
         # Move 1
         print("Move 1: leggs left to right")
-        print("1: bow left to right 6 times")
         self.bow_all_leggs_left_to_right(6, 300)
-        print("1: forward ride 200 140")
-        self.move_direction_forward("200", "140")
-        print("1: bow left to right 4 times")
+        self.move_direction_forward_with_time("200", "140", 4)
         self.bow_all_leggs_left_to_right(4, 200)
-        print("1: stop riding")
-        self.stop()
-        print("1: backward ride 200 140")
-        self.move_direction_backward("200", "140")
-        print("1: bow left to right 6 times")        
+        self.move_direction_backward_with_time("200", "140", 6)
         self.bow_all_leggs_left_to_right(6, 200)
-        print("stop")
-        self.stop()
-        
+
         # Move 2
         print("Move 2: Pirouette Left")
         self.pirouette_left(1)
@@ -309,14 +307,17 @@ class SingleDance:
         self.bow_upper_leggs(5)
 
         print("SingleDance Done")
-    
+
     # Pirouette
     def pirouette_right(self, nr_of_rounds):
+        print("     Pirouette right")
         time = 3.1 * nr_of_rounds
         self.reset_all_leggs()
         self.rotate_in_place_right(time)
         self.stop()
+
     def pirouette_left(self, nr_of_rounds):
+        print("     Pirouette left")
         time = 3.1 * nr_of_rounds
         self.reset_all_leggs()
         self.rotate_in_place_left(time)
@@ -324,6 +325,7 @@ class SingleDance:
 
     # All leggs
     def reset_all_leggs(self):
+        print("     Reset all leggs")
         self.move_servo(degree_to_position(10, 90))
         self.move_servo(degree_to_position(20, 90))
         self.move_servo(degree_to_position(30, 90))
@@ -338,9 +340,10 @@ class SingleDance:
         self.move_servo(degree_to_position(22, 30))
         self.move_servo(degree_to_position(32, 30))
         self.move_servo(degree_to_position(42, 30))
-    
+
     # Bow
     def bow_upper_leggs(self, nr_of_times):
+        print("     Bow upper leggs")
         self.set_speed(999)
         for i in range(0, nr_of_times):
             self.move_servo(degree_to_position(10, 40))
@@ -357,7 +360,9 @@ class SingleDance:
             self.move_servo(degree_to_position(41, 90))
             time.sleep(0.2)
         self.set_speed(100)
+
     def bow_all_leggs_left_to_right(self, nr_of_times, max_servo_speed):
+        print("     bow all leggs left to right")
         self.move_servo(degree_to_position(10, 120))
         self.move_servo(degree_to_position(20, 60))
         self.move_servo(degree_to_position(30, 120))
@@ -375,7 +380,7 @@ class SingleDance:
             self.move_servo(degree_to_position(32, 180))
             self.move_servo(degree_to_position(42, 180))
             time.sleep(0.5)
-            
+
             self.move_servo(degree_to_position(12, 180))
             self.move_servo(degree_to_position(22, 180))
             self.move_servo(degree_to_position(32, 0))
@@ -385,6 +390,7 @@ class SingleDance:
 
     # Leggs down
     def left_leggs_down(self):
+        print("     Left leggs down")
         self.reset_legg_bottom_right()
         self.reset_legg_upper_right()
         self.move_servo(degree_to_position(30, 160))
@@ -396,7 +402,9 @@ class SingleDance:
         self.move_servo(degree_to_position(32, 100))
         self.move_servo(degree_to_position(42, 100))
         time.sleep(1)
+
     def right_leggs_down(self):
+        print("     Right leggs down")
         self.reset_legg_bottom_left()
         self.reset_legg_upper_left()
         self.move_servo(degree_to_position(10, 0))
@@ -410,6 +418,7 @@ class SingleDance:
 
     # Leggs forward
     def upper_leggs_forward(self):
+        print("     Upper leggs forward")
         self.reset_legg_upper_left()
         self.reset_legg_upper_right()
 
@@ -421,7 +430,9 @@ class SingleDance:
 
         self.move_servo(degree_to_position(12, 90))
         self.move_servo(degree_to_position(42, 90))
+
     def bottom_leggs_forward(self):
+        print("     Bottom leggs forward")
         self.reset_legg_bottom_left()
         self.reset_legg_bottom_right()
         self.move_servo(degree_to_position(20, 140))
@@ -435,25 +446,28 @@ class SingleDance:
 
     # Reset to leggs middle position
     def reset_legg_upper_left(self):
-        print("reset upper left")
+        print("     Reset upper left")
         self.move_servo(degree_to_position(40, 90))
         self.move_servo(degree_to_position(41, 0))
         self.move_servo(degree_to_position(42, 30))
         time.sleep(0.5)
+
     def reset_legg_upper_right(self):
-        print("reset upper right")
+        print("     Reset upper right")
         self.move_servo(degree_to_position(10, 90))
         self.move_servo(degree_to_position(11, 0))
         self.move_servo(degree_to_position(12, 30))
         time.sleep(0.5)
+
     def reset_legg_bottom_left(self):
-        print("reset bottom left")
+        print("     Reset bottom left")
         self.move_servo(degree_to_position(30, 90))
         self.move_servo(degree_to_position(31, 0))
         self.move_servo(degree_to_position(32, 30))
         time.sleep(0.5)
+
     def reset_legg_bottom_right(self):
-        print("reset bottom right")
+        print("     Reset bottom right")
         self.move_servo(degree_to_position(20, 90))
         self.move_servo(degree_to_position(21, 0))
         self.move_servo(degree_to_position(22, 30))
@@ -461,91 +475,119 @@ class SingleDance:
 
     # Stop
     def stop(self):
+        print("     Stop")
         self.move_servo("95,0")
-        self.move_servo("96,0")   
+        self.move_servo("96,0")
 
     # Move with time
     def move_forward_with_time(self, time_forward):
+        print("     Move forward with time")
         self.upper_leggs_forward()
         self.move_servo("91,200")
         self.move_servo("92,200")
         time.sleep(time_forward)
-        self.stop()    
+        self.stop()
+
     def move_backward_with_time(self, time_backward):
+        print("     Move backward with time")
         self.bottom_leggs_forward()
         self.move_servo("93,200")
         self.move_servo("94,200")
         time.sleep(time_backward)
         self.stop()
+
     def move_direction_forward_with_time(self, motor_a, motor_b, time_direction):
+        print("     Move direction forward with time")
+
         self.upper_leggs_forward()
         self.move_servo("91," + motor_a)
         self.move_servo("92," + motor_b)
         time.sleep(time_direction)
         self.stop()
+
     def move_direction_backward_with_time(self, motor_a, motor_b, time_direction):
+        print("     Move direction backward with time")
         self.bottom_leggs_forward()
         self.move_servo("93," + motor_a)
         self.move_servo("94," + motor_b)
         time.sleep(time_direction)
         self.stop()
-    
+
     # Move no time
     def move_forward(self):
+        print("     Move forward")
         self.upper_leggs_forward()
         self.move_servo("91,200")
         self.move_servo("92,200")
+
     def move_backward(self):
+        print("     Move backward")
         self.bottom_leggs_forward()
         self.move_servo("93,200")
         self.move_servo("94,200")
+
     def move_direction_forward(self, motor_a, motor_b):
+        print("     Move direction forward")
         self.move_servo("91," + motor_a)
         self.move_servo("92," + motor_b)
+
     def move_direction_backward(self, motor_a, motor_b):
+        print("     Move direction backward")
         self.move_servo("93," + motor_a)
         self.move_servo("94," + motor_b)
 
     # Rotate right
     def rotate_right_forward(self, time_right_motor):
+        print("     Rotate right forward")
         self.move_servo("91,200")
         time.sleep(time_right_motor)
         self.stop()
+
     def rotate_right_backward(self, time_right_motor):
+        print("     Rotate right backward")
         self.move_servo("93,200")
         time.sleep(time_right_motor)
         self.stop()
 
     # Rotate left
     def rotate_left_forward(self, time_left_motor):
+        print("     Rotate left forward")
         self.move_servo("92,200")
         time.sleep(time_left_motor)
         self.stop()
+
     def rotate_left_backward(self, time_left_motor):
+        print("     Rotate left backward")
         self.move_servo("94,200")
         time.sleep(time_left_motor)
         self.stop()
 
     # Rotate in place, one round takes
     def rotate_in_place_left(self, time_left):
+        print("     Rotate in place left")
         self.move_servo("92,200")
         self.move_servo("93,200")
         time.sleep(time_left)
         self.stop()
+
     def rotate_in_place_right(self, time_right):
+        print("     Rotate in place right")
         self.move_servo("91,200")
         self.move_servo("94,200")
         time.sleep(time_right)
-        self.stop()      
+        self.stop()
 
-    # Helper functions    
+    # Helper functions
     def degree_to_position(servo, degrees):
         pos = translate(degrees, 0, 180, 205, 818)
         return f"{servo},{pos}"
+
     def percentage_to_position(servo, percentage):
         pos = translate(percentage, 0, 100, 205, 818)
         return f"{servo},{pos}"
+
     def move_servo(self, data):
         self.comm.write_byte_block(f"{data}\n")
+
     def set_speed(self, speed):
         self.comm.write_byte_block(f"100,{speed}\n")
