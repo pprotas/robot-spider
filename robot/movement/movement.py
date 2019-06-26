@@ -264,7 +264,7 @@ class SingleDance:
         time.sleep(2)       
 
         # Move 1
-        print("Move 2: Pirouette Left")
+        print("Move 1: leggs left to right")
         self.bow_all_leggs_left_to_right(6)
         self.move_direction_forward("200", "140")
         self.bow_all_leggs_left_to_right(4)
