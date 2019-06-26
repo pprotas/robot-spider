@@ -271,6 +271,8 @@ class SingleDance:
         # Move 4
         print("Move 4: Upper leggs bow")
         self.bow_upper_leggs()
+        self.bow_upper_leggs()
+        self.bow_upper_leggs()
 
         # Move 1
         print("Move 1: Pirouette Left")
@@ -320,8 +322,8 @@ class SingleDance:
     
     # Bow
     def bow_upper_leggs(self):
-        self.move_servo(degree_to_position(10, 150))
-        self.move_servo(degree_to_position(40, 30))
+        self.move_servo(degree_to_position(10, 30))
+        self.move_servo(degree_to_position(40, 150))
 
         self.move_servo(degree_to_position(11, 0))
         self.move_servo(degree_to_position(41, 0))
