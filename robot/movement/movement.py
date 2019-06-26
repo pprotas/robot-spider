@@ -262,6 +262,7 @@ class SingleDance:
     # Contructor
     def __init__(self, comm):
         self.comm = comm
+        self.set_speed(500)
 
     # Start dancing
     def start(self):
@@ -458,3 +459,5 @@ class SingleDance:
         return f"{servo},{pos}"
     def move_servo(self, data):
         self.comm.write_byte_block(f"{data}\n")
+    def set_speed(self, speed):
+        self.comm.write_byte_block(f"100,{speed}\n")
