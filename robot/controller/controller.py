@@ -35,7 +35,6 @@ class Controller:
         self.movement.set_speed(100)
         self.movement.fold_legs()
         
-
 ##        while self.power > 170:
 ##            print(self.power)
 ##            time.sleep(0.1)
@@ -70,6 +69,7 @@ class Controller:
                     Thread(target=self.singledance.start(), daemon=True).start()
                 
             elif (j["message"]["controltype"] == "ai"):
+                #reset too base position
                 if (self.controltype != "ai"):
                     self.controltype = "ai"
                     x = {"type": "request", "message": {"type": "visionserver", "arg": "lock"}}
@@ -79,6 +79,9 @@ class Controller:
                     self.ai = j["message"]["controlstate"]
                     x = {"type": "config", "message": {"controltype": "ai", "controlstate": self.ai} }
                     self.cloudcomputer.messages.append(json.dumps(x))
+                self.movement.fold_legs()
+                self.movement.move({"a": "92,0", "b": "93,0"})
+
 
             elif (j["message"]["controltype"] == "done"):
                 self.ai = ""
@@ -92,7 +95,7 @@ class Controller:
                 if(self.cloudcomputer != None):
                     self.cloudcomputer.ws.close()
                     self.cloudcomputer = None
-                    self.ai = None
+                    self.ai = ""
                     print("cloudcomputer disconnected")
                     x =  x = {"type": "config", "message": {"controltype": "done", "controlstate": j["message"]["controlstate"]} }
                     self.server.messages.append(j)
@@ -115,7 +118,7 @@ class Controller:
                         x = {"type": "config", "message": {"controltype": "ai", "controlstate": self.ai}}
                         self.cloudcomputer.messages.append(json.dumps(x))
                 else:
-                    self.controltype = ""
+                    self.controltype = "manuel"
                     self.ai = ""
                     x = {"type": "config", "message": {"controltype": "done", "controlstate": False }}
                     self.server.append(json.dumps(x))
