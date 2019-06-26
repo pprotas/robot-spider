@@ -26,7 +26,7 @@ class Movement:
         a2 = a*a
         b2 = b*b
         # x is de horizontale afstand tot het object
-        x = distance
+        x = distance + 8
         # y is de hoogte van het object ten opzichte van het laagste punt van de arm
         y = height
         y2 = y*y
@@ -60,23 +60,24 @@ class Movement:
         self.move_servo("1,500")
         self.move_servo("2,150")
         self.move_servo("3,850")
-        time.sleep(6)
+        time.sleep(3)
         self.move_servo("1,255")
-        time.sleep(5)
+        time.sleep(2)
         # self.move_servo("91,120")
         # self.move_servo("92,100")
         time.sleep(1)
         self.move_servo("99,0")
         self.set_speed(50)
-        self.move_servo(degree_to_position(1, q1))
+        self.move_servo(degree_to_position(1, q1 - 15))
         self.move_servo(degree_to_position(2, 90-q2))
         self.move_servo(degree_to_position(3, 90-q3))
-        time.sleep(5)
+        time.sleep(3)
         self.grab()
         time.sleep(2)
-        self.move_servo("1,600")
-        self.move_servo("2,70")
         self.move_servo("3,800")
+        self.move_servo("1,600")
+        time.sleep(0.5)
+        self.move_servo("2,50")
         self.set_speed(100)
 
     def drop_object(self):

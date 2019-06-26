@@ -151,7 +151,7 @@ class Controller:
         elif(type == "grab_object"):
             print("grabbing object")
             distance = j["message"]["distance"]
-            self.movement.grab_object(distance, -7)
+            self.movement.grab_object(distance, -8.1)
             self.movement.support()
         elif(type == "drop_object"):
             distance = j["message"]["distance"]
