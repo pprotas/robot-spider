@@ -136,7 +136,7 @@ class Controller:
             self.movement.dancing = value
         elif(type == "grab_object"):
             distance = j["message"]["distance"]
-            self.movement.grab_object(distance, -6)
+            self.movement.grab_object(distance, -6.5)
             self.movement.support()
         elif(type == "drop_object"):
             distance = j["message"]["distance"]
