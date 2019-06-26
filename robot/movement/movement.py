@@ -100,13 +100,26 @@ class Movement:
         print("Moving to object")
 
     def dance(self):
-        previous = self.sound1
+        previous1 = self.sound1
+        previous2 = self.sound2
+        
+        self.move_servo(degree_to_position(10, 50))
+        self.move_servo(degree_to_position(20, 130))
+        self.move_servo(degree_to_position(30, 50))
+        self.move_servo(degree_to_position(40, 130))
+        
         while True:
             if self.dancing:
                 print(self.sound1)
-                if(not(previous - 5 <= self.sound1 <= previous + 5)):
-                    previous = self.sound1
+                if(not(previous1 - 5 <= self.sound1 <= previous1 + 5)):
+                    previous1 = self.sound1
                     self.move_servo(percentage_to_position(1, self.sound1))
+                    
+                if(not(previous2 - 5 <= self.sound2 <= previous2 + 5)):
+                    self.move_servo(percentage_to_position(12, self.sound2))
+                    self.move_servo(percentage_to_position(22, self.sound2))
+                    self.move_servo(percentage_to_position(32, self.sound2))
+                    self.move_servo(percentage_to_position(42, self.sound2))
             time.sleep(0.1)
 
     def move(self, move, mode="tank"):
