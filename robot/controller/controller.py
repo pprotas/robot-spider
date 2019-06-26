@@ -8,7 +8,6 @@ from vision.camera import Camera
 import time
 import json
 
-
 class Controller:
 
     def __init__(self):
@@ -148,5 +147,3 @@ class Controller:
             self.movement.tilt_front()
         elif(type == "tilt_back"):
             self.movement.tilt_back()
-
-
