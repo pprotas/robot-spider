@@ -11,11 +11,9 @@ class SingleDance:
 
     # Start dancing
     def start(self):
-        print("Singledance start")
-        self.move_forward(4)
+        print("Singledance Start")
         self.pirouette_left()
-        self.pirouette_right()
-        self.move_backward(4)
+        print("SingleDance Done")
     
     # Pirouette
     def pirouette_right(self):
@@ -24,7 +22,7 @@ class SingleDance:
         self.stop()
     def pirouette_left(self):
         self.left_leggs_down()
-        self.rotate_in_place_left(3)
+        self.rotate_in_place_left(10)
         self.stop()
 
     # All leggs
