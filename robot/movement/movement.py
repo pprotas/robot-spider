@@ -225,9 +225,13 @@ class Movement:
         self.move_servo(degree_to_position(32, 180))
         self.move_servo(degree_to_position(42, 180))
 
-    def push_up_front(self):
-        self.move_servo(degree_to_position(10, 140))
-        self.move_servo(degree_to_position(40, 40))
+    def fold_front(self):
+        self.move_servo(degree_to_position(11,40))
+        self.move_servo(degree_to_position(41,40))
+        self.move_servo(degree_to_position(12,220))
+        self.move_servo(degree_to_position(42,220))
+        time.sleep(2)
+        self.fold_legs()
 
 def degree_to_position(servo, degrees):
     pos = translate(degrees, 0, 180, 205, 818)
