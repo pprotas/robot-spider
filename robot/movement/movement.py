@@ -17,7 +17,7 @@ class Movement:
 
     def grab_object(self, distance, height=-2.5):
         # instructies om een object op te pakken gegeven de afstand van dit object tot het arm
-        print("Grabbing object")
+        print("Grabbing object in movement")
 
         # a, b en c zijn lengtes van de grijparm
         a = 15
