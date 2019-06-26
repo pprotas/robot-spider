@@ -112,7 +112,7 @@ class SingleDance:
 
     # Move
     def move_forward(self, time_forward):
-        self.upper_leggs_forward()
+        # self.upper_leggs_forward()
         self.move_servo("91,200")
         self.move_servo("92,200")
         time.sleep(10)
