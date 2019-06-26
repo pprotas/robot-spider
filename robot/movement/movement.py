@@ -271,8 +271,6 @@ class SingleDance:
         # Move 4
         print("Move 4: Upper leggs bow")
         self.bow_upper_leggs()
-        self.bow_upper_leggs()
-        self.bow_upper_leggs()
 
         # Move 1
         print("Move 1: Pirouette Left")
