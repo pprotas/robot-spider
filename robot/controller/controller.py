@@ -164,3 +164,6 @@ class Controller:
             self.movement.tilt_back()
         elif(type == "fold_front"):
             self.movement.fold_front()
+        elif(type == "fold_arm"):
+            self.movement.fold_arm()
+        
