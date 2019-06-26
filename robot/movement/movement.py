@@ -329,10 +329,10 @@ class SingleDance:
             time.sleep(0.2)
         self.set_speed(100)
     def bow_all_leggs_left_to_right(self, nr_of_times):
-        self.move_servo(degree_to_position(10, 60))
-        self.move_servo(degree_to_position(20, 120))
-        self.move_servo(degree_to_position(30, 60))
-        self.move_servo(degree_to_position(40, 120))
+        self.move_servo(degree_to_position(10, 120))
+        self.move_servo(degree_to_position(20, 60))
+        self.move_servo(degree_to_position(30, 120))
+        self.move_servo(degree_to_position(40, 60))
 
         self.move_servo(degree_to_position(11, 0))
         self.move_servo(degree_to_position(21, 0))
