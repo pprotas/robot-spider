@@ -266,17 +266,32 @@ class SingleDance:
     # Start dancing
     def start(self):
         print("Singledance Start")
-        self.pirouette_left()
+        # Move 1
+        self.pirouette_left(1)
+
+        # Move 2
+        self.left_leggs_down()
+        self.rotate_left_forward(8)
+
+        # Move 3
+        self.reset_legg_upper_left()
+        self.reset_legg_bottom_left()
+        time.sleep(0.8)
+
+        # Move 4
+        self.pirouette_right(3)
         print("SingleDance Done")
     
     # Pirouette
-    def pirouette_right(self):
-        self.right_leggs_down()
-        self.rotate_in_place_right(3)
+    def pirouette_right(self, nr_of_rounds):
+        time = 3.1 * nr_of_rounds
+        self.reset_all_leggs()
+        self.rotate_in_place_right(time)
         self.stop()
-    def pirouette_left(self):
-        self.left_leggs_down()
-        self.rotate_in_place_left(3.1)
+    def pirouette_left(self, nr_of_rounds):
+        time = 3.1 * nr_of_rounds
+        self.reset_all_leggs()
+        self.rotate_in_place_left(time)
         self.stop()
 
     # All leggs
@@ -295,7 +310,6 @@ class SingleDance:
         self.move_servo(degree_to_position(22, 30))
         self.move_servo(degree_to_position(32, 30))
         self.move_servo(degree_to_position(42, 30))
-
     # Leggs down
     def left_leggs_down(self):
         self.reset_legg_bottom_right()
@@ -306,8 +320,8 @@ class SingleDance:
         self.move_servo(degree_to_position(31, 90))
         self.move_servo(degree_to_position(41, 90))
 
-        self.move_servo(degree_to_position(32, 130))
-        self.move_servo(degree_to_position(42, 130))
+        self.move_servo(degree_to_position(32, 100))
+        self.move_servo(degree_to_position(42, 100))
         time.sleep(1)
     def right_leggs_down(self):
         self.reset_legg_bottom_left()
@@ -427,7 +441,7 @@ class SingleDance:
     def rotate_in_place_left(self, time_left):
         self.move_servo("92,200")
         self.move_servo("93,200")
-        time.sleep(10)
+        time.sleep(time_left)
         self.stop()
     def rotate_in_place_right(self, time_right):
         self.move_servo("91,200")
