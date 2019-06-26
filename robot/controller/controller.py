@@ -79,8 +79,8 @@ class Controller:
                     self.ai = j["message"]["controlstate"]
                     x = {"type": "config", "message": {"controltype": "ai", "controlstate": self.ai} }
                     self.cloudcomputer.messages.append(json.dumps(x))
-                self.movement.fold_legs()
-                self.movement.move({"a": "92,0", "b": "93,0"})
+                #self.movement.fold_legs()
+                #self.movement.move({"a": "92,0", "b": "93,0"})
 
 
             elif (j["message"]["controltype"] == "done"):
