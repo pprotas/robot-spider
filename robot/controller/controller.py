@@ -97,7 +97,7 @@ class Controller:
                     self.cloudcomputer = None
                     self.ai = ""
                     print("cloudcomputer disconnected")
-                    x =  x = {"type": "config", "message": {"controltype": "done", "controlstate": j["message"]["controlstate"]} }
+                    x = {"type": "config", "message": {"controltype": "done", "controlstate": j["message"]["controlstate"]} }
                     self.server.messages.append(j)
     
             #in theory not used:     
