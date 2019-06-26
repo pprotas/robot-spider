@@ -22,7 +22,7 @@ class SingleDance:
         self.rotate_in_place_right(3)
         self.stop()
     def pirouette_left(self):
-        # self.left_leggs_down()
+        self.left_leggs_down()
         self.rotate_in_place_left(10)
         self.stop()
 
@@ -45,6 +45,8 @@ class SingleDance:
 
     # Leggs down
     def left_leggs_down(self):
+        self.reset_legg_bottom_right()
+        self.reset_legg_upper_right()
         self.move_servo(degree_to_position(30, 160))
         self.move_servo(degree_to_position(40, 20))
 
@@ -54,6 +56,8 @@ class SingleDance:
         self.move_servo(degree_to_position(32, 130))
         self.move_servo(degree_to_position(42, 130))
     def right_leggs_down(self):
+        self.reset_legg_bottom_left()
+        self.reset_legg_upper_left()
         self.move_servo(degree_to_position(10, 0))
         self.move_servo(degree_to_position(20, 0))
 
@@ -67,6 +71,7 @@ class SingleDance:
     def upper_leggs_forward(self):
         self.reset_legg_upper_left()
         self.reset_legg_upper_right()
+
         self.move_servo(degree_to_position(10, 140))
         self.move_servo(degree_to_position(40, 30))
 
@@ -89,18 +94,22 @@ class SingleDance:
 
     # Reset to leggs middle position
     def reset_legg_upper_left(self):
+        print("reset upper left")
         self.move_servo(degree_to_position(40, 90))
         self.move_servo(degree_to_position(41, 0))
         self.move_servo(degree_to_position(42, 30))
     def reset_legg_upper_right(self):
+        print("reset upper right")
         self.move_servo(degree_to_position(10, 90))
         self.move_servo(degree_to_position(11, 0))
         self.move_servo(degree_to_position(12, 30))
     def reset_legg_bottom_left(self):
+        print("reset bottom left")
         self.move_servo(degree_to_position(30, 90))
         self.move_servo(degree_to_position(31, 0))
         self.move_servo(degree_to_position(32, 30))
     def reset_legg_bottom_right(self):
+        print("reset bottom right")
         self.move_servo(degree_to_position(20, 90))
         self.move_servo(degree_to_position(21, 0))
         self.move_servo(degree_to_position(22, 30))
@@ -112,7 +121,7 @@ class SingleDance:
 
     # Move
     def move_forward(self, time_forward):
-        # self.upper_leggs_forward()
+        self.upper_leggs_forward()
         self.move_servo("91,200")
         self.move_servo("92,200")
         time.sleep(10)
