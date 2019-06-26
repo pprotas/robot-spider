@@ -21,7 +21,7 @@ class SingleDance:
         self.rotate_in_place_right(3)
         self.stop()
     def pirouette_left(self):
-        self.left_leggs_down()
+        # self.left_leggs_down()
         self.rotate_in_place_left(10)
         self.stop()
 
@@ -159,7 +159,7 @@ class SingleDance:
     def rotate_in_place_left(self, time_left):
         self.move_servo("92,200")
         self.move_servo("93,200")
-        time.sleep(time_left)
+        time.sleep(10)
         self.stop()
     def rotate_in_place_right(self, time_right):
         self.move_servo("91,200")
