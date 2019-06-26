@@ -257,12 +257,16 @@ class SingleDance:
     def start(self):
         print("Singledance Start")
 
+        self.move_servo(degree_to_position(1, 90))
+        self.move_servo(degree_to_position(2, 90))
+        self.move_servo(degree_to_position(3, 0))        
+
         # Move 1
-        self.bow_all_leggs_left_to_right(8)
-        self.move_direction_forward(200, 140)
+        self.bow_all_leggs_left_to_right(6)
+        self.move_direction_forward("200", "140")
         self.bow_all_leggs_left_to_right(2)
         self.stop()
-        self.move_direction_backward(200, 140)
+        self.move_direction_backward("200", "140")
         self.bow_all_leggs_left_to_right(4)
         self.stop()
         

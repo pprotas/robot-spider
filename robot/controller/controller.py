@@ -2,11 +2,10 @@ from communication.server_socket import Server_Socket
 from communication.ai_socket import AI_Socket
 from communication.i2c import I2C
 from movement.movement import Movement, SingleDance
-from threading import Thread
 from vision.camera import Camera
 import time
 import json
-
+import threading
 class Controller:
 
     def __init__(self):
@@ -21,15 +20,16 @@ class Controller:
         self.server = None
         self.camera = None
         self.ai = None
+        self.dance = ""
         
     def start(self):
         # Connection to webserver
         self.server = Server_Socket(self)
-        Thread(target=self.server.start, daemon=True).start()
+        threading.Thread(target=self.server.start, daemon=True).start()
         # Status checker
-        Thread(target=self.i2c.get_status, daemon=True).start()
+        threading.Thread(target=self.i2c.get_status, daemon=True).start()
         self.camera = Camera(self)
-        Thread(target=self.camera.start).start() 
+        threading.Thread(target=self.camera.start).start() 
         self.movement.set_speed(100)
         self.movement.fold_legs()
         
@@ -57,15 +57,30 @@ class Controller:
         elif(type == "config"):
             if (j["message"]["controltype"] == "manual"):
                 if (self.controltype != "manual"):
+                    self.ai = ""
                     self.controltype = "manual"
                     x = {"type": "config", "message": {"controltype": "done", "controlstate": False}}
                     self.cloudcomputer.messages.append(json.dumps(x))
+                
+                if (self.dance == 'singledance'):
+                    print("Stop singleDance")
+                    self.dance = ""
+                    self.danceThread.join()
+                elif (self.dance == 'linedance'):
+                    print("Stop lineDance")
+                    self.dance = ""
+                    self.movement.dancing = False
                     
                 #check if controlstate is a dance
                 if (j["message"]["controlstate"] == 'singledance'):
-                    # start singledance
-                    print("SingleDance")
-                    Thread(target=self.singledance.start(), daemon=True).start()
+                    print("Start singleDance")
+                    self.dance = 'singledance'
+                    self.danceThread = threading.Thread(target=self.singledance.start(), daemon=True)
+                    self.danceThread.start()
+                elif (j["message"]["controlstate"] == 'linedance'):
+                    print("Start lineDance")
+                    self.dance = 'linedance'
+                    self.movement.dancing = True#not self.movement.dancing
                 
             elif (j["message"]["controltype"] == "ai"):
                 #reset too base position
@@ -96,8 +111,8 @@ class Controller:
                     self.cloudcomputer = None
                     self.ai = ""
                     print("cloudcomputer disconnected")
-                    x =  x = {"type": "config", "message": {"controltype": "done", "controlstate": j["message"]["controlstate"]} }
-                    self.server.messages.append(message)
+                    #x =  x = {"type": "config", "message": {"controltype": "done", "controlstate": j["message"]["controlstate"]} }
+                    #self.server.messages.append(message)
     
             #in theory not used:     
             elif (j["message"]["controltype"] == "capture"):
@@ -113,7 +128,7 @@ class Controller:
                 if (ip != ""):
                     if(self.controltype == "ai" and self.cloudcomputer == None):
                         self.cloudcomputer = AI_Socket(self, ip)
-                        Thread(target=self.cloudcomputer.start, daemon=True).start()
+                        threading.Thread(target=self.cloudcomputer.start, daemon=True).start()
                         x = {"type": "config", "message": {"controltype": "ai", "controlstate": self.ai}}
                         self.cloudcomputer.messages.append(json.dumps(x))
                 else:
