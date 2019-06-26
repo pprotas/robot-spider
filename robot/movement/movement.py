@@ -252,7 +252,6 @@ class SingleDance:
     # Contructor
     def __init__(self, comm):
         self.comm = comm
-        self.set_speed(900)
 
     # Start dancing
     def start(self):
@@ -260,6 +259,7 @@ class SingleDance:
 
         # Move 4
         print("Move 4: Upper leggs bow")
+        self.set_speed(1023)
         self.bow_upper_leggs()
         time.sleep(0.5)
         self.bow_upper_leggs()
