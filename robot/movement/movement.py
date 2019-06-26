@@ -53,7 +53,7 @@ class Movement:
         q2 = math.degrees(q2)
 
         # q3 wordt berekend
-        q3 = q1 - q2
+        q3 = q1 - q2 - 10
 
         # de servo's worden bewogen op basis van de berekende gegevens
         self.let_go()
@@ -68,7 +68,7 @@ class Movement:
         time.sleep(1)
         self.move_servo("99,0")
         self.set_speed(50)
-        self.move_servo(degree_to_position(1, q1))
+        self.move_servo(degree_to_position(1, q1 - 10))
         self.move_servo(degree_to_position(2, 90-q2))
         self.move_servo(degree_to_position(3, 90-q3))
         time.sleep(5)
