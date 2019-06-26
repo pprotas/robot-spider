@@ -261,21 +261,27 @@ class SingleDance:
         # Move 4
         print("Move 4: Upper leggs bow")
         self.bow_upper_leggs()
+        time.sleep(0.5)
+        self.bow_upper_leggs()
+        time.sleep(0.5)
+        self.bow_upper_leggs()
+        time.sleep(0.5)
+        self.bow_upper_leggs()
 
-        # Move 1
-        print("Move 1: Pirouette Left")
-        self.pirouette_left(1)
+        # # Move 1
+        # print("Move 1: Pirouette Left")
+        # self.pirouette_left(1)
 
-        # Move 2
-        print("Move 2: Rotate left with left leggs down")
-        self.left_leggs_down()
-        self.rotate_left_forward(8)
+        # # Move 2
+        # print("Move 2: Rotate left with left leggs down")
+        # self.left_leggs_down()
+        # self.rotate_left_forward(8)
 
-        # Move 3
-        print("Move 3: 3 Pirouette's Right")
-        self.reset_legg_upper_left()
-        self.reset_legg_bottom_left()
-        self.pirouette_right(3)
+        # # Move 3
+        # print("Move 3: 3 Pirouette's Right")
+        # self.reset_legg_upper_left()
+        # self.reset_legg_bottom_left()
+        # self.pirouette_right(3)
 
         print("SingleDance Done")
     
