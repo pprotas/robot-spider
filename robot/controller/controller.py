@@ -86,9 +86,9 @@ class Controller:
                 self.ai = ""
                 self.controltype = "manual"
                 #turn off current robot actions
-                handle_message()
+                #handle_message()
                 self.cloudcomputer.messages = []
-                self.cloudcomputer.messages.append(j)
+                self.cloudcomputer.messages.append(message)
 
             elif (j["message"]["controltype"] == "close"):
                 if(self.cloudcomputer != None):
@@ -97,7 +97,7 @@ class Controller:
                     self.ai = ""
                     print("cloudcomputer disconnected")
                     x =  x = {"type": "config", "message": {"controltype": "done", "controlstate": j["message"]["controlstate"]} }
-                    self.server.messages.append(j)
+                    self.server.messages.append(message)
     
             #in theory not used:     
             elif (j["message"]["controltype"] == "capture"):
@@ -117,7 +117,7 @@ class Controller:
                         x = {"type": "config", "message": {"controltype": "ai", "controlstate": self.ai}}
                         self.cloudcomputer.messages.append(json.dumps(x))
                 else:
-                    self.controltype = "manuel"
+                    self.controltype = "manual"
                     self.ai = ""
                     x = {"type": "config", "message": {"controltype": "done", "controlstate": False }}
                     self.server.append(json.dumps(x))

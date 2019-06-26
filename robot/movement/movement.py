@@ -260,10 +260,10 @@ class SingleDance:
         # Move 1
         self.bow_all_leggs_left_to_right(8)
         self.move_direction_forward(200, 140)
-        self.bow_all_leggs_left_to_right(3)
+        self.bow_all_leggs_left_to_right(2)
         self.stop()
         self.move_direction_backward(200, 140)
-        self.bow_all_leggs_left_to_right(6)
+        self.bow_all_leggs_left_to_right(4)
         self.stop()
         
         # # Move 2
@@ -477,11 +477,9 @@ class SingleDance:
         self.move_servo("93,200")
         self.move_servo("94,200")
     def move_direction_forward(self, motor_a, motor_b):
-        self.upper_leggs_forward()
         self.move_servo("91," + motor_a)
         self.move_servo("92," + motor_b)
     def move_direction_backward(self, motor_a, motor_b):
-        self.bottom_leggs_forward()
         self.move_servo("93," + motor_a)
         self.move_servo("94," + motor_b)
 
