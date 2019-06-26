@@ -187,26 +187,18 @@ class Movement:
 
     def tilt_front(self):
         # Instructions to lift back of robot
-        self.move_servo("11,100")
-        self.move_servo("41,100")
-        time.sleep(1)
         self.move_servo(degree_to_position(10,50))
         self.move_servo(degree_to_position(40,130))
-        time.sleep(2)
-        self.move_servo("12,100")
-        self.move_servo("42,100")
         time.sleep(3)
+        self.move_servo(degree_to_position(11,40))
+        self.move_servo(degree_to_position(41,40))
+        self.move_servo(degree_to_position(12,220))
+        self.move_servo(degree_to_position(42,220))
+        time.sleep(1)
         self.move_servo(degree_to_position(11,90))
         self.move_servo(degree_to_position(41,90))
-        self.move_servo(degree_to_position(12,20))
-        self.move_servo(degree_to_position(42,20))
-        self.move_servo(degree_to_position(10,50))
-        self.move_servo(degree_to_position(40,130))
-        self.move_servo(degree_to_position(12,0))
-        self.move_servo(degree_to_position(42,0))
-        time.sleep(3)
-        self.move_servo(degree_to_position(11,160))
-        self.move_servo(degree_to_position(41,160))
+        self.move_servo(degree_to_position(12,180))
+        self.move_servo(degree_to_position(42,180))
 
     def support_back(self):
         self.move_servo(degree_to_position(20, 0))
