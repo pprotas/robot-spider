@@ -53,7 +53,7 @@ class Movement:
         q2 = math.degrees(q2)
 
         # q3 wordt berekend
-        q3 = q1 - q2 - 9
+        q3 = q1 - q2
 
         # de servo's worden bewogen op basis van de berekende gegevens
         self.let_go()
