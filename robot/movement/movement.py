@@ -53,7 +53,7 @@ class Movement:
         q2 = math.degrees(q2)
 
         # q3 wordt berekend
-        q3 = q1 - q2 - 10
+        q3 = q1 - q2 - 9
 
         # de servo's worden bewogen op basis van de berekende gegevens
         self.let_go()
@@ -266,7 +266,7 @@ class SingleDance:
         # Move 1
         print("Move 1: leggs left to right")
         print("1: bow left to right 6 times")
-        self.bow_all_leggs_left_to_right(6, 700)
+        self.bow_all_leggs_left_to_right(6, 300)
         print("1: forward ride 200 140")
         self.move_direction_forward("200", "140")
         print("1: bow left to right 4 times")
@@ -365,7 +365,7 @@ class SingleDance:
             self.move_servo(degree_to_position(22, 0))
             self.move_servo(degree_to_position(32, 180))
             self.move_servo(degree_to_position(42, 180))
-            time.sleep(0.4)
+            time.sleep(0.5)
             
             self.move_servo(degree_to_position(12, 180))
             self.move_servo(degree_to_position(22, 180))
