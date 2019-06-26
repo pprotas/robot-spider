@@ -75,7 +75,7 @@ class Movement:
         self.grab()
         time.sleep(2)
         self.move_servo("1,600")
-        self.move_servo("2,50")
+        self.move_servo("2,70")
         self.move_servo("3,800")
         self.set_speed(100)
 
