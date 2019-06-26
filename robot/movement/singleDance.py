@@ -12,7 +12,8 @@ class SingleDance:
     # Start dancing
     def start(self):
         print("Singledance Start")
-        self.pirouette_left()
+        # self.pirouette_left()
+        self.move_forward(10)
         print("SingleDance Done")
     
     # Pirouette
@@ -114,7 +115,7 @@ class SingleDance:
         self.upper_leggs_forward()
         self.move_servo("91,200")
         self.move_servo("92,200")
-        time.sleep(time_forward)
+        time.sleep(10)
         self.stop()    
     def move_backward(self, time_backward):
         self.bottom_leggs_forward()
