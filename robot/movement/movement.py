@@ -259,14 +259,7 @@ class SingleDance:
 
         # Move 4
         print("Move 4: Upper leggs bow")
-        self.set_speed(999)
-        self.bow_upper_leggs()
-        time.sleep(0.5)
-        self.bow_upper_leggs()
-        time.sleep(0.5)
-        self.bow_upper_leggs()
-        time.sleep(0.5)
-        self.bow_upper_leggs()
+        self.bow_upper_leggs(5)
 
         # # Move 1
         # print("Move 1: Pirouette Left")
@@ -315,20 +308,23 @@ class SingleDance:
         self.move_servo(degree_to_position(42, 30))
     
     # Bow
-    def bow_upper_leggs(self):
-        self.move_servo(degree_to_position(10, 40))
-        self.move_servo(degree_to_position(40, 140))
+    def bow_upper_leggs(self, nr_of_times):
+        self.set_speed(999)
+        for i in range(0, nr_of_times):
+            self.move_servo(degree_to_position(10, 40))
+            self.move_servo(degree_to_position(40, 140))
 
-        self.move_servo(degree_to_position(11, 0))
-        self.move_servo(degree_to_position(41, 0))
+            self.move_servo(degree_to_position(11, 0))
+            self.move_servo(degree_to_position(41, 0))
 
-        self.move_servo(degree_to_position(12, 90))
-        self.move_servo(degree_to_position(42, 90))
+            self.move_servo(degree_to_position(12, 90))
+            self.move_servo(degree_to_position(42, 90))
 
-        time.sleep(2)
-        self.move_servo(degree_to_position(11, 90))
-        self.move_servo(degree_to_position(41, 90))
-        time.sleep(2)
+            time.sleep(0.4)
+            self.move_servo(degree_to_position(11, 90))
+            self.move_servo(degree_to_position(41, 90))
+            time.sleep(0.2)
+        self.set_speed(100)
     
     # Leggs down
     def left_leggs_down(self):
