@@ -14,8 +14,6 @@ class I2C:
         self.json = ""
 
     def write_byte_block(self, value):
-        print("write to block")
-        print(value)
         data = list(bytearray(value, 'ascii'))
         self.bus.write_i2c_block_data(self.address, 0, data)
         time.sleep(0.05)

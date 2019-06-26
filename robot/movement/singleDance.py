@@ -12,8 +12,7 @@ class SingleDance:
     # Start dancing
     def start(self):
         print("Singledance Start")
-        # self.pirouette_left()
-        self.move_forward(10)
+        self.pirouette_left()
         print("SingleDance Done")
     
     # Pirouette
@@ -23,7 +22,7 @@ class SingleDance:
         self.stop()
     def pirouette_left(self):
         self.left_leggs_down()
-        self.rotate_in_place_left(10)
+        self.rotate_in_place_left(3.1)
         self.stop()
 
     # All leggs
@@ -55,6 +54,7 @@ class SingleDance:
 
         self.move_servo(degree_to_position(32, 130))
         self.move_servo(degree_to_position(42, 130))
+        time.sleep(1)
     def right_leggs_down(self):
         self.reset_legg_bottom_left()
         self.reset_legg_upper_left()
@@ -98,21 +98,25 @@ class SingleDance:
         self.move_servo(degree_to_position(40, 90))
         self.move_servo(degree_to_position(41, 0))
         self.move_servo(degree_to_position(42, 30))
+        time.sleep(1)
     def reset_legg_upper_right(self):
         print("reset upper right")
         self.move_servo(degree_to_position(10, 90))
         self.move_servo(degree_to_position(11, 0))
         self.move_servo(degree_to_position(12, 30))
+        time.sleep(1)
     def reset_legg_bottom_left(self):
         print("reset bottom left")
         self.move_servo(degree_to_position(30, 90))
         self.move_servo(degree_to_position(31, 0))
         self.move_servo(degree_to_position(32, 30))
+        time.sleep(1)
     def reset_legg_bottom_right(self):
         print("reset bottom right")
         self.move_servo(degree_to_position(20, 90))
         self.move_servo(degree_to_position(21, 0))
         self.move_servo(degree_to_position(22, 30))
+        time.sleep(1)
 
     # Stop
     def stop(self):
