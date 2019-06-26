@@ -147,3 +147,5 @@ class Controller:
             self.movement.tilt_front()
         elif(type == "tilt_back"):
             self.movement.tilt_back()
+        elif(type == "push_up_front"):
+            self.movement.push_up_front()
