@@ -244,29 +244,6 @@ class Movement:
         self.move_servo("3,150")
 
 
-def degree_to_position(servo, degrees):
-    pos = translate(degrees, 0, 180, 205, 818)
-    return f"{servo},{pos}"
-
-
-def percentage_to_position(servo, percentage):
-    pos = translate(percentage, 0, 100, 205, 818)
-    return f"{servo},{pos}"
-
-
-def translate(value, left_min, left_max, right_min, right_max):
-    leftSpan = left_max - left_min
-    rightSpan = right_max - right_min
-    valueScaled = float(value - left_min) / float(leftSpan)
-    return int(right_min + (valueScaled * rightSpan))
-
-
-class SingleDance:
-
-    # Contructor
-    def __init__(self, comm):
-        self.comm = comm
-
     # Start dancing
     def start(self):
         print("Singledance Start")
@@ -287,24 +264,24 @@ class SingleDance:
         self.move_direction_backward_with_time("200", "140", 6)
         self.bow_all_leggs_left_to_right(6)
 
-        # # Move 2
-        # print("Move 2: Pirouette Left")
-        # self.pirouette_left(2)
+        # Move 2
+        print("Move 2: Pirouette Left")
+        self.pirouette_left(2)
 
-        # # Move 3
-        # print("Move 3: Rotate left with left leggs down")
-        # self.left_leggs_down()
-        # self.rotate_left_forward(8)
+        # Move 3
+        print("Move 3: Rotate left with left leggs down")
+        self.left_leggs_down()
+        self.rotate_left_forward(8)
 
-        # # Move 4
-        # print("Move 4: 3 Pirouette's Right")
-        # self.reset_legg_upper_left()
-        # self.reset_legg_bottom_left()
-        # self.pirouette_right(3)
+        # Move 4
+        print("Move 4: 3 Pirouette's Right")
+        self.reset_legg_upper_left()
+        self.reset_legg_bottom_left()
+        self.pirouette_right(3)
 
-        # # Move 5
-        # print("Move 5: Upper leggs bow")
-        # self.bow_upper_leggs(5)
+        # Move 5
+        print("Move 5: Upper leggs bow")
+        self.bow_upper_leggs(5)
 
         print("SingleDance Done")
 
@@ -564,14 +541,16 @@ class SingleDance:
         time.sleep(time_right)
         self.stop()
 
-    # Helper functions
-    def degree_to_position(servo, degrees):
-        pos = translate(degrees, 0, 180, 205, 818)
-        return f"{servo},{pos}"
-    def percentage_to_position(servo, percentage):
-        pos = translate(percentage, 0, 100, 205, 818)
-        return f"{servo},{pos}"
-    def move_servo(self, data):
-        self.comm.write_byte_block(f"{data}\n")
-    def set_speed(self, speed):
-        self.comm.write_byte_block(f"100,{speed}\n")
+def degree_to_position(servo, degrees):
+    pos = translate(degrees, 0, 180, 205, 818)
+    return f"{servo},{pos}"
+
+def percentage_to_position(servo, percentage):
+    pos = translate(percentage, 0, 100, 205, 818)
+    return f"{servo},{pos}"
+
+def translate(value, left_min, left_max, right_min, right_max):
+    leftSpan = left_max - left_min
+    rightSpan = right_max - right_min
+    valueScaled = float(value - left_min) / float(leftSpan)
+    return int(right_min + (valueScaled * rightSpan))

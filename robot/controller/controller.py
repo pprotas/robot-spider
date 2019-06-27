@@ -1,7 +1,7 @@
 from communication.server_socket import Server_Socket
 from communication.ai_socket import AI_Socket
 from communication.i2c import I2C
-from movement.movement import Movement, SingleDance
+from movement.movement import Movement
 from vision.camera import Camera
 import time
 import json
@@ -14,7 +14,6 @@ class Controller:
         # Movement center with connection to Arduino
         self.i2c = I2C(self, 4)
         self.movement = Movement(self.i2c)
-        self.singledance = SingleDance(self.i2c)
         self.controltype = None
         self.cloudcomputer = None
         self.server = None
@@ -75,7 +74,7 @@ class Controller:
                 if (j["message"]["controlstate"] == 'singledance'):
                     print("Start singleDance")
                     self.dance = 'singledance'
-                    self.danceThread = threading.Thread(target=self.singledance.start(), daemon=True)
+                    self.danceThread = threading.Thread(target=self.movement.start(), daemon=True)
                     self.danceThread.start()
                 elif (j["message"]["controlstate"] == 'linedance'):
                     print("Start lineDance")
