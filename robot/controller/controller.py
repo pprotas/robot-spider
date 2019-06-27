@@ -164,4 +164,28 @@ class Controller:
             self.movement.fold_front()
         elif(type == "fold_arm"):
             self.movement.fold_arm()
+
+        elif(type == "dance_arm_up"):
+            self.movement.dance_arm_up()
+        elif(type == "bow_all_leggs_left_to_right"):
+            nr_of_times = j["message"]["nr_of_times"]
+            self.movement.bow_all_leggs_left_to_right(nr_of_times)
+        elif(type == "pirouette_left"):
+            nr_of_times = j["message"]["nr_of_times"]
+            self.movement.pirouette_left(nr_of_times)
+        elif(type == "pirouette_right"):
+            nr_of_times = j["message"]["nr_of_times"]
+            self.movement.pirouette_right(nr_of_times)
+        elif(type == "reset_all_leggs"):
+            self.movement.reset_all_leggs()
+        elif(type == "bow_upper_leggs"):
+            self.movement.bow_upper_leggs()
+        elif(type == "left_leggs_down"):
+            self.movement.left_leggs_down()
+        elif(type == "right_leggs_down"):
+            self.movement.right_leggs_down()
+        elif(type == "upper_leggs_forward"):
+            self.movement.upper_leggs_forward()
+        elif(type == "bottom_leggs_forward"):
+            self.movement.bottom_leggs_forward()        
         

@@ -248,11 +248,7 @@ class Movement:
     def start(self):
         try:
             # Move 0
-            time.sleep(3)
-            self.move_servo(degree_to_position(1, 90))
-            self.move_servo(degree_to_position(2, 90))
-            self.move_servo(degree_to_position(3, 0))
-            time.sleep(5)
+
 
             # Move 1
             self.bow_all_leggs_left_to_right(6)
@@ -278,6 +274,13 @@ class Movement:
 
         except:
             time.sleep(0.01)
+
+    def dance_arm_up(self):
+        time.sleep(3)
+        self.move_servo(degree_to_position(1, 90))
+        self.move_servo(degree_to_position(2, 90))
+        self.move_servo(degree_to_position(3, 0))
+        time.sleep(5)
 
     # Pirouette
     def pirouette_right(self, nr_of_rounds):
