@@ -25,18 +25,17 @@ class I2C:
     def get_status(self):
         Thread(target=self.send_status, daemon=True).start()
         while True:
-            temperature = self.read()
-            servo = self.read()
-            sound0 = self.read()
-            sound1 = self.read()
-            sound2 = self.read()
-            power = self.read()
-            self.controller.power = power
-            self.controller.movement.sound0 = sound0
-            self.controller.movement.sound1 = sound1
-            self.controller.movement.sound2 = sound2
-            self.json = jg.generate_json(
-                ["temp", "servoID", "power"], [temperature, servo, power])
+            #temperature = self.read()
+            #servo = self.read()
+            #sound0 = self.read()
+            #sound1 = self.read()
+            #sound2 = self.read()
+            #power = self.read()
+            #self.controller.power = power
+            #self.controller.movement.sound0 = sound0
+            #self.controller.movement.sound1 = sound1
+            #self.controller.movement.sound2 = sound2
+            #self.json = jg.generate_json(["temp", "servoID", "power"], [temperature, servo, power])
 
     def send_status(self):
         while True:
