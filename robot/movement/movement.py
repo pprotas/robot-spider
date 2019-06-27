@@ -445,6 +445,7 @@ class Movement:
         print("     Stop")
         self.move_servo("95,0")
         self.move_servo("96,0")
+        time.sleep(1)
 
     # Move with time
     def move_forward_with_time(self, time_forward):
