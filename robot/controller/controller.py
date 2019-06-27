@@ -64,7 +64,6 @@ class Controller:
                 if (self.dance == 'singledance'):
                     print("Stop singleDance")
                     self.dance = ""
-                    self.danceThread.join()
                 elif (self.dance == 'linedance'):
                     print("Stop lineDance")
                     self.dance = ""
@@ -74,7 +73,7 @@ class Controller:
                 if (j["message"]["controlstate"] == 'singledance'):
                     print("Start singleDance")
                     self.dance = 'singledance'
-                    self.danceThread = threading.Thread(target=self.movement.start(), daemon=True)
+                    self.movement.start()
                     self.danceThread.start()
                 elif (j["message"]["controlstate"] == 'linedance'):
                     print("Start lineDance")
