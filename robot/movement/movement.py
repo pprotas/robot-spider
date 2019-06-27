@@ -327,10 +327,10 @@ class Movement:
             self.move_servo(degree_to_position(12, 90))
             self.move_servo(degree_to_position(42, 90))
 
-            time.sleep(0.6)
+            time.sleep(1)
             self.move_servo(degree_to_position(11, 90))
             self.move_servo(degree_to_position(41, 90))
-            time.sleep(0.4)
+            time.sleep(0.8)
         self.set_speed(100)
     def bow_all_leggs_left_to_right(self, nr_of_times):
         print("     Bow all leggs left to right")
@@ -350,13 +350,13 @@ class Movement:
             self.move_servo(degree_to_position(22, 0))
             self.move_servo(degree_to_position(32, 180))
             self.move_servo(degree_to_position(42, 180))
-            time.sleep(0.6)
+            time.sleep(1)
 
             self.move_servo(degree_to_position(12, 180))
             self.move_servo(degree_to_position(22, 180))
             self.move_servo(degree_to_position(32, 0))
             self.move_servo(degree_to_position(42, 0))
-            time.sleep(0.6)
+            time.sleep(0.8)
         self.set_speed(100)
 
     # Leggs down
